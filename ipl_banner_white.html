@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>IPL 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+
+html, body {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: #ffffff;
+  font-family: 'Poppins', sans-serif;
+}
+
+.banner {
+  width: 100vw; height: 100vh;
+  background: #ffffff;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Subtle light atmosphere ── */
+.bg-pitch {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 100% 50% at 50% 120%, rgba(163,230,53,0.06) 0%, transparent 65%),
+    radial-gradient(ellipse 80% 40% at 50% 130%, rgba(96,165,250,0.04) 0%, transparent 55%);
+}
+.bg-sky {
+  position: absolute; top: 0; left: 0; right: 0; height: 55%;
+  background: radial-gradient(ellipse 90% 80% at 50% -10%, rgba(37,99,235,0.04) 0%, transparent 65%);
+}
+
+
+
+/* ── TOP HEADER — centred only ── */
+.top-bar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3vw 5vw 1.5vw;
+  flex-shrink: 0;
+  gap: 0.8vw;
+}
+
+.league-line {
+  font-size: clamp(9px, 2.2vw, 16px);
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  color: rgba(0,0,0,0.35);
+  text-transform: uppercase;
+}
+
+.season-line {
+  font-size: clamp(11px, 2.8vw, 20px);
+  font-weight: 900;
+  letter-spacing: 0.18em;
+  color: #1a1a1a;
+  text-transform: uppercase;
+}
+
+/* thin divider under header */
+.header-rule {
+  width: clamp(40px, 12vw, 90px);
+  height: 1.5px;
+  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.15), transparent);
+  margin-top: 0.3vw;
+}
+
+/* ── STATUS BADGE ── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 1vw;
+  border-radius: 100px;
+  padding: 0.5vw 2.2vw;
+  font-size: clamp(7px, 1.7vw, 12px);
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.badge.live   { background: rgba(22,163,74,0.1); border: 1.5px solid rgba(22,163,74,0.4); color: #16a34a; }
+.badge.upcoming { background: rgba(37,99,235,0.07); border: 1.5px solid rgba(37,99,235,0.25); color: #1d4ed8; }
+.badge.final  { background: rgba(100,116,139,0.08); border: 1.5px solid rgba(100,116,139,0.25); color: #475569; }
+
+.live-dot {
+  width: clamp(5px, 1.4vw, 8px); height: clamp(5px, 1.4vw, 8px);
+  background: #16a34a; border-radius: 50%;
+  animation: pulse 1.4s ease-in-out infinite; flex-shrink: 0;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.25} }
+
+/* ── SCORE ZONE ── */
+.score-zone {
+  flex: 1;
+  position: relative; z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4vw;
+}
+
+/* ── TEAM BLOCK ── */
+.team {
+  flex: 1;
+  display: flex; flex-direction: column;
+  align-items: center;
+  gap: 1.5vw;
+}
+
+.city-name {
+  font-size: clamp(22px, 8vw, 72px);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.team.home .city-name { color: #3d8a00; }
+.team.away .city-name { color: #1d4ed8; }
+
+.team-sub {
+  font-size: clamp(7px, 1.8vw, 13px);
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: rgba(0,0,0,0.3);
+  text-transform: uppercase;
+  margin-top: -1vw;
+}
+
+/* ── SCORE CARD ── */
+.score-card {
+  border-radius: clamp(8px, 2vw, 16px);
+  padding: clamp(10px, 2.5vw, 22px) clamp(16px, 5vw, 44px);
+  text-align: center;
+  min-width: clamp(100px, 28vw, 240px);
+}
+.team.home .score-card { background: rgba(163,230,53,0.1); border: 1.5px solid rgba(100,180,0,0.2); }
+.team.away .score-card { background: rgba(96,165,250,0.1); border: 1.5px solid rgba(29,78,216,0.2); }
+
+.score-main {
+  display: flex; align-items: baseline;
+  justify-content: center; gap: 0.2vw; line-height: 1;
+}
+.score-runs {
+  font-size: clamp(28px, 10vw, 88px);
+  font-weight: 800; color: #111111;
+  letter-spacing: -0.05em;
+  font-variant-numeric: tabular-nums;
+}
+.score-wkt {
+  font-size: clamp(16px, 5.5vw, 50px);
+  font-weight: 600; color: rgba(0,0,0,0.35);
+}
+.score-ov {
+  font-size: clamp(8px, 2vw, 14px);
+  font-weight: 500; color: rgba(0,0,0,0.35);
+  margin-top: 0.5vw; letter-spacing: 0.05em;
+}
+
+.pre-state { display: flex; flex-direction: column; align-items: center; gap: 1vw; }
+.pre-dash  { font-size: clamp(28px, 9vw, 76px); font-weight: 200; color: rgba(0,0,0,0.12); line-height: 1; }
+.pre-label { font-size: clamp(8px, 2vw, 13px); font-weight: 600; color: rgba(0,0,0,0.28); letter-spacing: 0.12em; text-transform: uppercase; }
+
+/* ── VS COLUMN ── */
+.vs-col {
+  flex-shrink: 0;
+  width: clamp(80px, 18vw, 170px);
+  display: flex; flex-direction: column;
+  align-items: center;
+  gap: clamp(6px, 2vw, 16px);
+  padding: 0 1vw;
+}
+.vs-text  { font-size: clamp(16px, 5vw, 40px); font-weight: 900; color: rgba(0,0,0,0.08); letter-spacing: 0.08em; }
+.match-time  { font-size: clamp(14px, 4.5vw, 36px); font-weight: 800; color: #111; letter-spacing: -0.02em; text-align: center; line-height: 1; }
+.match-venue { font-size: clamp(7px, 1.8vw, 12px); font-weight: 500; color: rgba(0,0,0,0.35); letter-spacing: 0.08em; text-transform: uppercase; text-align: center; line-height: 1.4; }
+
+.crr-box { background: rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.1); border-radius: clamp(6px, 1.5vw, 12px); padding: clamp(5px,1.5vw,10px) clamp(10px,3vw,20px); text-align: center; }
+.crr-label { font-size: clamp(6px, 1.4vw, 10px); font-weight: 700; color: rgba(0,0,0,0.35); letter-spacing: 0.2em; text-transform: uppercase; }
+.crr-val { font-size: clamp(14px, 4vw, 28px); font-weight: 800; color: #b45309; line-height: 1.1; }
+.result-text { font-size: clamp(8px, 2.2vw, 14px); font-weight: 600; color: rgba(0,0,0,0.45); text-align: center; line-height: 1.4; max-width: clamp(80px, 18vw, 160px); }
+
+/* ── SCHEDULE STRIP — 2 matches only ── */
+.strip {
+  position: relative; z-index: 10;
+  flex-shrink: 0;
+  height: clamp(64px, 17vw, 106px);
+  background: #f8f9fb;
+  border-top: 1px solid rgba(0,0,0,0.07);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5vw;
+  gap: 0;
+  overflow: hidden;
+}
+
+.strip-label {
+  font-size: clamp(7px, 1.8vw, 11px);
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: rgba(0,0,0,0.3);
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-right: clamp(12px, 5vw, 44px);
+}
+
+.strip-list {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  gap: 0;
+}
+
+.strip-item {
+  flex: 1;
+  display: flex; flex-direction: column;
+  gap: clamp(2px, 0.6vw, 5px);
+  padding: 0 clamp(10px, 4vw, 36px);
+}
+.strip-item + .strip-item {
+  border-left: 1px solid rgba(0,0,0,0.08);
+}
+
+.strip-date {
+  font-size: clamp(7px, 1.7vw, 11px);
+  font-weight: 700;
+  color: rgba(0,0,0,0.3);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+.strip-match {
+  font-size: clamp(12px, 3.5vw, 22px);
+  font-weight: 700;
+  color: rgba(0,0,0,0.8);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+.strip-match .sep {
+  font-weight: 400;
+  color: rgba(0,0,0,0.25);
+  margin: 0 0.6vw;
+  font-size: 0.82em;
+}
+.strip-venue {
+  font-size: clamp(7px, 1.5vw, 10px);
+  color: rgba(0,0,0,0.28);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+</style>
+</head>
+<body>
+
+<div class="banner">
+  <div class="bg-pitch"></div>
+  <div class="bg-sky"></div>
+
+
+  <!-- ── TOP: centred header only ── -->
+  <div class="top-bar">
+    <div class="league-line">Indian Premier League</div>
+    <div class="season-line">2026</div>
+    <div class="header-rule"></div>
+    <div id="statusBadge">
+      <div class="badge upcoming"><span>7:30 PM IST</span></div>
+    </div>
+  </div>
+
+  <!-- ── SCORES ── -->
+  <div class="score-zone">
+    <div class="team home">
+      <div class="city-name" id="homeCityName">Lucknow</div>
+      <div class="team-sub"  id="homeSubName">Super Giants</div>
+      <div class="score-card">
+        <div id="homeScore">
+          <div class="pre-state"><div class="pre-dash">—</div><div class="pre-label">Yet to bat</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="vs-col">
+      <div class="vs-text">VS</div>
+      <div id="vsCenter">
+        <div class="match-time"  id="matchTime">7:30 PM</div>
+        <div class="match-venue" id="matchVenue">Apr 1 · Lucknow</div>
+      </div>
+    </div>
+
+    <div class="team away">
+      <div class="city-name" id="awayCityName">Delhi</div>
+      <div class="team-sub"  id="awaySubName">Capitals</div>
+      <div class="score-card">
+        <div id="awayScore">
+          <div class="pre-state"><div class="pre-dash">—</div><div class="pre-label">Yet to bat</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STRIP: 2 matches ── -->
+  <div class="strip">
+    <div class="strip-label">Next Up</div>
+    <div class="strip-list" id="stripList"></div>
+  </div>
+</div>
+
+<script>
+const TEAMS = {
+  LSG:  { city:'Lucknow',   sub:'Super Giants',     short:'Lucknow'   },
+  DC:   { city:'Delhi',     sub:'Capitals',          short:'Delhi'     },
+  MI:   { city:'Mumbai',    sub:'Indians',           short:'Mumbai'    },
+  CSK:  { city:'Chennai',   sub:'Super Kings',       short:'Chennai'   },
+  RCB:  { city:'Bangalore', sub:'Royal Challengers', short:'Bangalore' },
+  KKR:  { city:'Kolkata',   sub:'Knight Riders',     short:'Kolkata'   },
+  SRH:  { city:'Hyderabad', sub:'Sunrisers',         short:'Hyderabad' },
+  RR:   { city:'Rajasthan', sub:'Royals',            short:'Rajasthan' },
+  PBKS: { city:'Punjab',    sub:'Kings',             short:'Punjab'    },
+  GT:   { city:'Gujarat',   sub:'Titans',            short:'Gujarat'   },
+};
+
+const SCHEDULE = [
+  { date:'Apr 1',  matchNo:5,  home:'LSG',  away:'DC',   time:'7:30 PM', venue:'Lucknow'   },
+  { date:'Apr 2',  matchNo:6,  home:'KKR',  away:'SRH',  time:'7:30 PM', venue:'Kolkata'   },
+  { date:'Apr 3',  matchNo:7,  home:'CSK',  away:'PBKS', time:'7:30 PM', venue:'Chennai'   },
+  { date:'Apr 4',  matchNo:8,  home:'DC',   away:'GT',   time:'3:30 PM', venue:'Delhi'     },
+  { date:'Apr 5',  matchNo:9,  home:'SRH',  away:'LSG',  time:'7:30 PM', venue:'Hyderabad' },
+  { date:'Apr 6',  matchNo:10, home:'RCB',  away:'CSK',  time:'7:30 PM', venue:'Bangalore' },
+  { date:'Apr 7',  matchNo:11, home:'KKR',  away:'PBKS', time:'7:30 PM', venue:'Kolkata'   },
+  { date:'Apr 8',  matchNo:12, home:'RR',   away:'MI',   time:'7:30 PM', venue:'Guwahati'  },
+  { date:'Apr 9',  matchNo:13, home:'DC',   away:'GT',   time:'7:30 PM', venue:'Delhi'     },
+  { date:'Apr 10', matchNo:14, home:'LSG',  away:'RCB',  time:'7:30 PM', venue:'Lucknow'   },
+  { date:'Apr 11', matchNo:15, home:'MI',   away:'SRH',  time:'7:30 PM', venue:'Mumbai'    },
+  { date:'Apr 12', matchNo:16, home:'CSK',  away:'KKR',  time:'3:30 PM', venue:'Chennai'   },
+  { date:'Apr 13', matchNo:17, home:'GT',   away:'PBKS', time:'7:30 PM', venue:'Ahmedabad' },
+  { date:'Apr 14', matchNo:18, home:'RR',   away:'DC',   time:'7:30 PM', venue:'Jaipur'    },
+  { date:'Apr 15', matchNo:19, home:'MI',   away:'LSG',  time:'7:30 PM', venue:'Mumbai'    },
+  { date:'Apr 16', matchNo:20, home:'RCB',  away:'SRH',  time:'7:30 PM', venue:'Bangalore' },
+  { date:'Apr 17', matchNo:21, home:'KKR',  away:'GT',   time:'7:30 PM', venue:'Kolkata'   },
+  { date:'Apr 18', matchNo:22, home:'PBKS', away:'RR',   time:'7:30 PM', venue:'Mullanpur' },
+  { date:'Apr 19', matchNo:23, home:'DC',   away:'CSK',  time:'3:30 PM', venue:'Delhi'     },
+  { date:'Apr 20', matchNo:24, home:'MI',   away:'RCB',  time:'7:30 PM', venue:'Mumbai'    },
+];
+
+let state = {
+  status: 'upcoming', matchIdx: 0,
+  home: { runs:null, wickets:null, overs:null },
+  away: { runs:null, wickets:null, overs:null },
+  crr: null, result: null,
+};
+
+const $ = id => document.getElementById(id);
+
+function todayMatchIndex() {
+  const now = new Date();
+  const key = `${now.toLocaleString('en-US',{month:'short'})} ${now.getDate()}`;
+  const idx = SCHEDULE.findIndex(m => m.date === key);
+  return idx >= 0 ? idx : 0;
+}
+
+function scoreHTML(team) {
+  if (team.runs === null) {
+    return `<div class="pre-state"><div class="pre-dash">—</div><div class="pre-label">Yet to bat</div></div>`;
+  }
+  const ov = team.overs !== null ? `${team.overs} ov` : '';
+  return `
+    <div class="score-main">
+      <span class="score-runs">${team.runs}</span>
+      <span class="score-wkt">/${team.wickets}</span>
+    </div>
+    ${ov ? `<div class="score-ov">${ov}</div>` : ''}`;
+}
+
+function render() {
+  const idx = state.matchIdx;
+  const m   = SCHEDULE[idx];
+  const H   = TEAMS[m.home] || { city:m.home, sub:'', short:m.home };
+  const A   = TEAMS[m.away] || { city:m.away, sub:'', short:m.away };
+
+  $('homeCityName').textContent = H.city;
+  $('homeSubName').textContent  = H.sub;
+  $('awayCityName').textContent = A.city;
+  $('awaySubName').textContent  = A.sub;
+
+  // Badge
+  const badge = $('statusBadge');
+  if (state.status === 'live') {
+    badge.innerHTML = `<div class="badge live"><div class="live-dot"></div><span>Live Now</span></div>`;
+  } else if (state.status === 'complete') {
+    badge.innerHTML = `<div class="badge final"><span>Full Time</span></div>`;
+  } else {
+    badge.innerHTML = `<div class="badge upcoming"><span>${m.time} IST · ${m.date}</span></div>`;
+  }
+
+  // VS centre
+  const vc = $('vsCenter');
+  if (state.status === 'live' && state.crr !== null) {
+    vc.innerHTML = `<div class="crr-box"><div class="crr-label">CRR</div><div class="crr-val">${state.crr}</div></div>`;
+  } else if (state.result) {
+    vc.innerHTML = `<div class="result-text">${state.result}</div>`;
+  } else {
+    vc.innerHTML = `<div class="match-time">${m.time}</div><div class="match-venue">${m.date} · ${m.venue}</div>`;
+  }
+
+  $('homeScore').innerHTML = scoreHTML(state.home);
+  $('awayScore').innerHTML = scoreHTML(state.away);
+
+  // Strip — exactly 2 next matches
+  const next = SCHEDULE.slice(idx + 1, idx + 3);
+  $('stripList').innerHTML = next.map(nm => {
+    const h = TEAMS[nm.home] || { short: nm.home };
+    const a = TEAMS[nm.away] || { short: nm.away };
+    return `
+      <div class="strip-item">
+        <div class="strip-date">${nm.date}</div>
+        <div class="strip-match">${h.short}<span class="sep">vs</span>${a.short}</div>
+        <div class="strip-venue">${nm.venue} · ${nm.time}</div>
+      </div>`;
+  }).join('');
+}
+
+// ── Live fetch ──
+const PROXY  = 'https://api.allorigins.win/get?url=';
+const CB_URL = 'https://www.cricbuzz.com/live-cricket-scores/149662/lsg-vs-dc-5th-match-indian-premier-league-2026';
+
+async function fetchScore() {
+  try {
+    const r    = await fetch(PROXY + encodeURIComponent(CB_URL), { cache:'no-store' });
+    const data = await r.json();
+    const html = data.contents;
+    if (!html) return;
+
+    const doc  = new DOMParser().parseFromString(html, 'text/html');
+    const body = doc.body ? doc.body.textContent : '';
+    const isDone = /won by|match tied/i.test(body);
+    const isLive = !isDone && /\bCRR\b|\blive\b/i.test(body);
+
+    if (isDone) {
+      state.status = 'complete';
+      const rm = body.match(/([A-Z][A-Za-z\s]+(?:won by|tied)[^\.]+)/);
+      state.result = rm ? rm[0].trim().slice(0, 80) : 'Match Complete';
+    } else if (isLive) {
+      state.status = 'live';
+    } else {
+      state.status = 'upcoming';
+    }
+
+    const scoreRx = /(\d{1,3})\/(\d)\s*[\(\[](\d+\.?\d*)\s*ov/gi;
+    const found = []; let mx;
+    const src = (doc.querySelector('title')?.textContent || '') + ' ' + body;
+    while ((mx = scoreRx.exec(src)) !== null) found.push({ runs:+mx[1], wickets:+mx[2], overs:parseFloat(mx[3]) });
+    if (!found.length) {
+      const s2 = /\b(\d{2,3})\/(\d)\b/g;
+      while ((mx = s2.exec(src)) !== null) found.push({ runs:+mx[1], wickets:+mx[2], overs:null });
+    }
+    if (found[0]) Object.assign(state.home, found[0]);
+    if (found[1]) Object.assign(state.away, found[1]);
+    const cm = body.match(/CRR\s*:?\s*([\d.]+)/i);
+    if (cm) state.crr = parseFloat(cm[1]);
+  } catch(e) { console.warn('Fetch failed', e.message); }
+}
+
+async function tick() {
+  state.matchIdx = todayMatchIndex();
+  await fetchScore();
+  render();
+}
+
+tick();
+
+let refreshMs = 120_000;
+let timer = setInterval(tick, refreshMs);
+setInterval(() => {
+  const target = state.status === 'live' ? 30_000 : 120_000;
+  if (target !== refreshMs) { clearInterval(timer); refreshMs = target; timer = setInterval(tick, refreshMs); }
+}, 15_000);
+</script>
+</body>
+</html>
