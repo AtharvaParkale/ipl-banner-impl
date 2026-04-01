@@ -1,5 +1,8 @@
 {
-  "rewrites": [
-    { "source": "/", "destination": "/ipl_banner_white.html" }
-  ]
+    "rewrites": [
+        {
+            "source": "/",
+            "destination": "/ipl_banner_white_two.html"
+        }
+    ]
 }
