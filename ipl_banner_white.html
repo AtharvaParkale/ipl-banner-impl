@@ -11,23 +11,17 @@
 html, body {
   width: 100%; height: 100%;
   overflow: hidden;
-  background: #f8f9fb;
+  background: #ffffff;
   font-family: 'Poppins', sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .banner {
-  width: 100%;
-  max-width: calc(100vh * 1.6842);
-  aspect-ratio: 1.6842;
+  width: 100vw; height: 100vh;
   background: #ffffff;
   position: relative;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  container-type: inline-size;
 }
 
 /* ── Subtle light atmosphere ── */
@@ -52,13 +46,13 @@ html, body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 3cqw 5cqw 1.5cqw;
+  padding: 3vw 5vw 1.5vw;
   flex-shrink: 0;
-  gap: 0.8cqw;
+  gap: 0.8vw;
 }
 
 .league-line {
-  font-size: clamp(9px, 2.2cqw, 16px);
+  font-size: clamp(9px, 2.2vw, 16px);
   font-weight: 700;
   letter-spacing: 0.28em;
   color: rgba(0,0,0,0.35);
@@ -66,7 +60,7 @@ html, body {
 }
 
 .season-line {
-  font-size: clamp(11px, 2.8cqw, 20px);
+  font-size: clamp(11px, 2.8vw, 20px);
   font-weight: 900;
   letter-spacing: 0.18em;
   color: #1a1a1a;
@@ -75,20 +69,20 @@ html, body {
 
 /* thin divider under header */
 .header-rule {
-  width: clamp(40px, 12cqw, 90px);
+  width: clamp(40px, 12vw, 90px);
   height: 1.5px;
   background: linear-gradient(90deg, transparent, rgba(0,0,0,0.15), transparent);
-  margin-top: 0.3cqw;
+  margin-top: 0.3vw;
 }
 
 /* ── STATUS BADGE ── */
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: 1cqw;
+  gap: 1vw;
   border-radius: 100px;
-  padding: 0.5cqw 2.2cqw;
-  font-size: clamp(7px, 1.7cqw, 12px);
+  padding: 0.5vw 2.2vw;
+  font-size: clamp(7px, 1.7vw, 12px);
   font-weight: 700;
   letter-spacing: 0.15em;
   text-transform: uppercase;
@@ -99,7 +93,7 @@ html, body {
 .badge.final  { background: rgba(100,116,139,0.08); border: 1.5px solid rgba(100,116,139,0.25); color: #475569; }
 
 .live-dot {
-  width: clamp(5px, 1.4cqw, 8px); height: clamp(5px, 1.4cqw, 8px);
+  width: clamp(5px, 1.4vw, 8px); height: clamp(5px, 1.4vw, 8px);
   background: #16a34a; border-radius: 50%;
   animation: pulse 1.4s ease-in-out infinite; flex-shrink: 0;
 }
@@ -112,7 +106,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 4cqw;
+  padding: 0 4vw;
 }
 
 /* ── TEAM BLOCK ── */
@@ -120,11 +114,11 @@ html, body {
   flex: 1;
   display: flex; flex-direction: column;
   align-items: center;
-  gap: 1.5cqw;
+  gap: 1.5vw;
 }
 
 .city-name {
-  font-size: clamp(22px, 8cqw, 72px);
+  font-size: clamp(14px, 5vw, 42px);
   font-weight: 900;
   letter-spacing: -0.03em;
   line-height: 1;
@@ -134,90 +128,90 @@ html, body {
 .team.away .city-name { color: #1d4ed8; }
 
 .team-sub {
-  font-size: clamp(7px, 1.8cqw, 13px);
+  font-size: clamp(7px, 1.8vw, 13px);
   font-weight: 600;
   letter-spacing: 0.18em;
   color: rgba(0,0,0,0.3);
   text-transform: uppercase;
-  margin-top: -1cqw;
+  margin-top: -1vw;
 }
 
 /* ── SCORE CARD ── */
 .score-card {
-  border-radius: clamp(8px, 2cqw, 16px);
-  padding: clamp(10px, 2.5cqw, 22px) clamp(16px, 5cqw, 44px);
+  border-radius: clamp(8px, 2vw, 16px);
+  padding: clamp(10px, 2.5vw, 22px) clamp(16px, 5vw, 44px);
   text-align: center;
-  min-width: clamp(100px, 28cqw, 240px);
+  min-width: clamp(100px, 28vw, 240px);
 }
 .team.home .score-card { background: rgba(163,230,53,0.1); border: 1.5px solid rgba(100,180,0,0.2); }
 .team.away .score-card { background: rgba(96,165,250,0.1); border: 1.5px solid rgba(29,78,216,0.2); }
 
 .score-main {
   display: flex; align-items: baseline;
-  justify-content: center; gap: 0.2cqw; line-height: 1;
+  justify-content: center; gap: 0.2vw; line-height: 1;
 }
 .score-runs {
-  font-size: clamp(28px, 10cqw, 88px);
+  font-size: clamp(28px, 10vw, 88px);
   font-weight: 800; color: #111111;
   letter-spacing: -0.05em;
   font-variant-numeric: tabular-nums;
 }
 .score-wkt {
-  font-size: clamp(16px, 5.5cqw, 50px);
+  font-size: clamp(16px, 5.5vw, 50px);
   font-weight: 600; color: rgba(0,0,0,0.35);
 }
 .score-ov {
-  font-size: clamp(8px, 2cqw, 14px);
+  font-size: clamp(8px, 2vw, 14px);
   font-weight: 500; color: rgba(0,0,0,0.35);
-  margin-top: 0.5cqw; letter-spacing: 0.05em;
+  margin-top: 0.5vw; letter-spacing: 0.05em;
 }
 
-.pre-state { display: flex; flex-direction: column; align-items: center; gap: 1cqw; }
-.pre-dash  { font-size: clamp(28px, 9cqw, 76px); font-weight: 200; color: rgba(0,0,0,0.12); line-height: 1; }
-.pre-label { font-size: clamp(8px, 2cqw, 13px); font-weight: 600; color: rgba(0,0,0,0.28); letter-spacing: 0.12em; text-transform: uppercase; }
+.pre-state { display: flex; flex-direction: column; align-items: center; gap: 1vw; }
+.pre-dash  { font-size: clamp(28px, 9vw, 76px); font-weight: 200; color: rgba(0,0,0,0.12); line-height: 1; }
+.pre-label { font-size: clamp(8px, 2vw, 13px); font-weight: 600; color: rgba(0,0,0,0.28); letter-spacing: 0.12em; text-transform: uppercase; }
 
 /* ── VS COLUMN ── */
 .vs-col {
   flex-shrink: 0;
-  width: clamp(80px, 18cqw, 170px);
+  width: clamp(80px, 18vw, 170px);
   display: flex; flex-direction: column;
   align-items: center;
-  gap: clamp(6px, 2cqw, 16px);
-  padding: 0 1cqw;
+  gap: clamp(6px, 2vw, 16px);
+  padding: 0 1vw;
 }
-.vs-text  { font-size: clamp(16px, 5cqw, 40px); font-weight: 900; color: rgba(0,0,0,0.08); letter-spacing: 0.08em; }
-.match-time  { font-size: clamp(14px, 4.5cqw, 36px); font-weight: 800; color: #111; letter-spacing: -0.02em; text-align: center; line-height: 1; }
-.match-venue { font-size: clamp(7px, 1.8cqw, 12px); font-weight: 500; color: rgba(0,0,0,0.35); letter-spacing: 0.08em; text-transform: uppercase; text-align: center; line-height: 1.4; }
+.vs-text  { font-size: clamp(16px, 5vw, 40px); font-weight: 900; color: rgba(0,0,0,0.08); letter-spacing: 0.08em; }
+.match-time  { font-size: clamp(14px, 4.5vw, 36px); font-weight: 800; color: #111; letter-spacing: -0.02em; text-align: center; line-height: 1; }
+.match-venue { font-size: clamp(7px, 1.8vw, 12px); font-weight: 500; color: rgba(0,0,0,0.35); letter-spacing: 0.08em; text-transform: uppercase; text-align: center; line-height: 1.4; }
 
-.crr-box { background: rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.1); border-radius: clamp(6px, 1.5cqw, 12px); padding: clamp(5px,1.5cqw,10px) clamp(10px,3cqw,20px); text-align: center; }
-.crr-label { font-size: clamp(6px, 1.4cqw, 10px); font-weight: 700; color: rgba(0,0,0,0.35); letter-spacing: 0.2em; text-transform: uppercase; }
-.crr-val { font-size: clamp(14px, 4cqw, 28px); font-weight: 800; color: #b45309; line-height: 1.1; }
-.result-text { font-size: clamp(8px, 2.2cqw, 14px); font-weight: 600; color: rgba(0,0,0,0.45); text-align: center; line-height: 1.4; max-width: clamp(80px, 18cqw, 160px); }
+.crr-box { background: rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.1); border-radius: clamp(6px, 1.5vw, 12px); padding: clamp(5px,1.5vw,10px) clamp(10px,3vw,20px); text-align: center; }
+.crr-label { font-size: clamp(6px, 1.4vw, 10px); font-weight: 700; color: rgba(0,0,0,0.35); letter-spacing: 0.2em; text-transform: uppercase; }
+.crr-val { font-size: clamp(14px, 4vw, 28px); font-weight: 800; color: #b45309; line-height: 1.1; }
+.result-text { font-size: clamp(8px, 2.2vw, 14px); font-weight: 600; color: rgba(0,0,0,0.45); text-align: center; line-height: 1.4; max-width: clamp(80px, 18vw, 160px); }
 
 /* ── SCHEDULE STRIP — 2 matches only ── */
 .strip {
   position: relative; z-index: 10;
   flex-shrink: 0;
-  height: clamp(64px, 17cqw, 106px);
+  height: clamp(64px, 17vw, 106px);
   background: #f8f9fb;
   border-top: 1px solid rgba(0,0,0,0.07);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0 5cqw;
+  padding: 0 5vw;
   gap: 0;
   overflow: hidden;
 }
 
 .strip-label {
-  font-size: clamp(7px, 1.8cqw, 11px);
+  font-size: clamp(7px, 1.8vw, 11px);
   font-weight: 800;
   letter-spacing: 0.22em;
   color: rgba(0,0,0,0.3);
   text-transform: uppercase;
   white-space: nowrap;
   flex-shrink: 0;
-  margin-right: clamp(12px, 5cqw, 44px);
+  margin-right: clamp(12px, 5vw, 44px);
 }
 
 .strip-list {
@@ -230,22 +224,22 @@ html, body {
 .strip-item {
   flex: 1;
   display: flex; flex-direction: column;
-  gap: clamp(2px, 0.6cqw, 5px);
-  padding: 0 clamp(10px, 4cqw, 36px);
+  gap: clamp(2px, 0.6vw, 5px);
+  padding: 0 clamp(10px, 4vw, 36px);
 }
 .strip-item + .strip-item {
   border-left: 1px solid rgba(0,0,0,0.08);
 }
 
 .strip-date {
-  font-size: clamp(7px, 1.7cqw, 11px);
+  font-size: clamp(7px, 1.7vw, 11px);
   font-weight: 700;
   color: rgba(0,0,0,0.3);
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
 .strip-match {
-  font-size: clamp(12px, 3.5cqw, 22px);
+  font-size: clamp(12px, 3.5vw, 22px);
   font-weight: 700;
   color: rgba(0,0,0,0.8);
   letter-spacing: -0.01em;
@@ -254,11 +248,11 @@ html, body {
 .strip-match .sep {
   font-weight: 400;
   color: rgba(0,0,0,0.25);
-  margin: 0 0.6cqw;
+  margin: 0 0.6vw;
   font-size: 0.82em;
 }
 .strip-venue {
-  font-size: clamp(7px, 1.5cqw, 10px);
+  font-size: clamp(7px, 1.5vw, 10px);
   color: rgba(0,0,0,0.28);
   letter-spacing: 0.05em;
   white-space: nowrap;
