@@ -3,315 +3,512 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>IPL 2026</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<title>IPL 2026 Scoreboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+<!-- Digital scoreboard font -->
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@700;900&display=swap" rel="stylesheet">
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+* { margin:0; padding:0; box-sizing:border-box; -webkit-font-smoothing:antialiased; }
 
 html, body {
-  width: 100%; height: 100%;
-  overflow: hidden;
-  background: #ffffff;
-  font-family: 'Poppins', sans-serif;
+  width:100%; overflow:hidden;
+  background:#0a1020;
+  font-family:'Poppins', sans-serif;
 }
 
-.banner {
-  width: 100vw; height: 100vh;
-  background: #ffffff;
-  position: relative;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-}
-
-/* ── Subtle light atmosphere ── */
-.bg-pitch {
-  position: absolute; inset: 0;
-  background:
-    radial-gradient(ellipse 100% 50% at 50% 120%, rgba(163,230,53,0.06) 0%, transparent 65%),
-    radial-gradient(ellipse 80% 40% at 50% 130%, rgba(96,165,250,0.04) 0%, transparent 55%);
-}
-.bg-sky {
-  position: absolute; top: 0; left: 0; right: 0; height: 55%;
-  background: radial-gradient(ellipse 90% 80% at 50% -10%, rgba(37,99,235,0.04) 0%, transparent 65%);
+/* ── OUTER BOARD ── */
+.board {
+  width:100%;
+  background: linear-gradient(160deg, #0f1e3d 0%, #0c1a30 50%, #0a1f1a 100%);
+  border:1.5px solid rgba(255,255,255,0.08);
+  border-radius:14px;
+  overflow:hidden;
+  position:relative;
 }
 
 
-
-/* ── TOP HEADER — centred only ── */
-.top-bar {
-  position: relative;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 3vw 5vw 1.5vw;
-  flex-shrink: 0;
-  gap: 0.8vw;
+/* ── TOP HEADER BAR ── */
+.header {
+  background:rgba(255,255,255,0.04);
+  border-bottom:1px solid rgba(255,255,255,0.07);
+  padding:8px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
-
-.league-line {
-  font-size: clamp(9px, 2.2vw, 16px);
-  font-weight: 700;
-  letter-spacing: 0.28em;
-  color: rgba(0,0,0,0.35);
-  text-transform: uppercase;
+.header-league {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(8px,2.2vw,12px);
+  font-weight:700;
+  color:rgba(255,255,255,0.45);
+  letter-spacing:0.2em;
+  text-transform:uppercase;
 }
-
-.season-line {
-  font-size: clamp(11px, 2.8vw, 20px);
-  font-weight: 900;
-  letter-spacing: 0.18em;
-  color: #1a1a1a;
-  text-transform: uppercase;
+.header-badge {
+  display:inline-flex; align-items:center; gap:5px;
 }
-
-/* thin divider under header */
-.header-rule {
-  width: clamp(40px, 12vw, 90px);
-  height: 1.5px;
-  background: linear-gradient(90deg, transparent, rgba(0,0,0,0.15), transparent);
-  margin-top: 0.3vw;
-}
-
-/* ── STATUS BADGE ── */
-.badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 1vw;
-  border-radius: 100px;
-  padding: 0.5vw 2.2vw;
-  font-size: clamp(7px, 1.7vw, 12px);
-  font-weight: 700;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  white-space: nowrap;
-}
-.badge.live   { background: rgba(22,163,74,0.1); border: 1.5px solid rgba(22,163,74,0.4); color: #16a34a; }
-.badge.upcoming { background: rgba(37,99,235,0.07); border: 1.5px solid rgba(37,99,235,0.25); color: #1d4ed8; }
-.badge.final  { background: rgba(100,116,139,0.08); border: 1.5px solid rgba(100,116,139,0.25); color: #475569; }
-
 .live-dot {
-  width: clamp(5px, 1.4vw, 8px); height: clamp(5px, 1.4vw, 8px);
-  background: #16a34a; border-radius: 50%;
-  animation: pulse 1.4s ease-in-out infinite; flex-shrink: 0;
+  width:7px; height:7px;
+  background:#22c55e; border-radius:50%;
+  animation:blink 1.4s ease-in-out infinite;
+  box-shadow:0 0 6px rgba(34,197,94,0.8);
 }
-@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.25} }
-
-/* ── SCORE ZONE ── */
-.score-zone {
-  flex: 1;
-  position: relative; z-index: 10;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 4vw;
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.15} }
+.live-label {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(7px,1.8vw,10px);
+  font-weight:700; color:#4ade80;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
 }
-
-/* ── TEAM BLOCK ── */
-.team {
-  flex: 1;
-  display: flex; flex-direction: column;
-  align-items: center;
-  gap: 1.5vw;
+.header-match {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(7px,1.8vw,10px);
+  font-weight:500;
+  color:rgba(255,255,255,0.3);
+  letter-spacing:0.08em;
 }
 
-.city-name {
-  font-size: clamp(14px, 5vw, 42px);
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  line-height: 1;
-  text-transform: uppercase;
-}
-.team.home .city-name { color: #3d8a00; }
-.team.away .city-name { color: #1d4ed8; }
-
-.team-sub {
-  font-size: clamp(7px, 1.8vw, 13px);
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  color: rgba(0,0,0,0.3);
-  text-transform: uppercase;
-  margin-top: -1vw;
+/* ── MAIN SCORE AREA ── */
+.score-area {
+  display:flex;
+  align-items:stretch;
+  padding:10px 10px 8px;
+  gap:8px;
 }
 
-/* ── SCORE CARD ── */
-.score-card {
-  border-radius: clamp(8px, 2vw, 16px);
-  padding: clamp(10px, 2.5vw, 22px) clamp(16px, 5vw, 44px);
-  text-align: center;
-  min-width: clamp(100px, 28vw, 240px);
-}
-.team.home .score-card { background: rgba(163,230,53,0.1); border: 1.5px solid rgba(100,180,0,0.2); }
-.team.away .score-card { background: rgba(96,165,250,0.1); border: 1.5px solid rgba(29,78,216,0.2); }
-
-.score-main {
-  display: flex; align-items: baseline;
-  justify-content: center; gap: 0.2vw; line-height: 1;
-}
-.score-runs {
-  font-size: clamp(28px, 10vw, 88px);
-  font-weight: 800; color: #111111;
-  letter-spacing: -0.05em;
-  font-variant-numeric: tabular-nums;
-}
-.score-wkt {
-  font-size: clamp(16px, 5.5vw, 50px);
-  font-weight: 600; color: rgba(0,0,0,0.35);
-}
-.score-ov {
-  font-size: clamp(8px, 2vw, 14px);
-  font-weight: 500; color: rgba(0,0,0,0.35);
-  margin-top: 0.5vw; letter-spacing: 0.05em;
+/* ── TEAM PANEL ── */
+.team-panel {
+  flex:1;
+  display:flex; flex-direction:column;
+  gap:5px;
 }
 
-.pre-state { display: flex; flex-direction: column; align-items: center; gap: 1vw; }
-.pre-dash  { font-size: clamp(28px, 9vw, 76px); font-weight: 200; color: rgba(0,0,0,0.12); line-height: 1; }
-.pre-label { font-size: clamp(8px, 2vw, 13px); font-weight: 600; color: rgba(0,0,0,0.28); letter-spacing: 0.12em; text-transform: uppercase; }
+/* Team name label row */
+.team-label-row {
+  display:flex; align-items:center; justify-content:center; gap:6px;
+}
+.team-tag {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(7px,1.8vw,9px);
+  font-weight:600; letter-spacing:0.14em;
+  color:rgba(255,255,255,0.28);
+  text-transform:uppercase;
+}
+.batting-indicator {
+  width:6px; height:6px;
+  background:#f5c842;
+  border-radius:50%;
+  box-shadow:0 0 5px rgba(245,200,66,0.8);
+  display:none;
+}
+.batting-indicator.show { display:block; }
 
-/* ── VS COLUMN ── */
-.vs-col {
-  flex-shrink: 0;
-  width: clamp(80px, 18vw, 170px);
-  display: flex; flex-direction: column;
-  align-items: center;
-  gap: clamp(6px, 2vw, 16px);
-  padding: 0 1vw;
+/* City name on the board */
+.team-city {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(14px,5vw,28px);
+  font-weight:900; letter-spacing:-0.02em;
+  text-align:center; text-transform:uppercase;
+  line-height:1;
 }
-.vs-text  { font-size: clamp(16px, 5vw, 40px); font-weight: 900; color: rgba(0,0,0,0.08); letter-spacing: 0.08em; }
-.match-time  { font-size: clamp(14px, 4.5vw, 36px); font-weight: 800; color: #111; letter-spacing: -0.02em; text-align: center; line-height: 1; }
-.match-venue { font-size: clamp(7px, 1.8vw, 12px); font-weight: 500; color: rgba(0,0,0,0.35); letter-spacing: 0.08em; text-transform: uppercase; text-align: center; line-height: 1.4; }
+.team-panel.home .team-city { color:#a3e635; }
+.team-panel.away .team-city { color:#60a5fa; }
 
-.crr-box { background: rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.1); border-radius: clamp(6px, 1.5vw, 12px); padding: clamp(5px,1.5vw,10px) clamp(10px,3vw,20px); text-align: center; }
-.crr-label { font-size: clamp(6px, 1.4vw, 10px); font-weight: 700; color: rgba(0,0,0,0.35); letter-spacing: 0.2em; text-transform: uppercase; }
-.crr-val { font-size: clamp(14px, 4vw, 28px); font-weight: 800; color: #b45309; line-height: 1.1; }
-.result-text { font-size: clamp(8px, 2.2vw, 14px); font-weight: 600; color: rgba(0,0,0,0.45); text-align: center; line-height: 1.4; max-width: clamp(80px, 18vw, 160px); }
-
-/* ── SCHEDULE STRIP — 2 matches only ── */
-.strip {
-  position: relative; z-index: 10;
-  flex-shrink: 0;
-  height: clamp(64px, 17vw, 106px);
-  background: #f8f9fb;
-  border-top: 1px solid rgba(0,0,0,0.07);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 5vw;
-  gap: 0;
-  overflow: hidden;
+/* ── DIGITAL SCORE BOX ── */
+.score-box {
+  background:rgba(0,0,0,0.25);
+  border:1px solid rgba(255,255,255,0.09);
+  border-radius:10px;
+  padding:8px 6px 6px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
 }
-
-.strip-label {
-  font-size: clamp(7px, 1.8vw, 11px);
-  font-weight: 800;
-  letter-spacing: 0.22em;
-  color: rgba(0,0,0,0.3);
-  text-transform: uppercase;
-  white-space: nowrap;
-  flex-shrink: 0;
-  margin-right: clamp(12px, 5vw, 44px);
+/* LED scanline texture — only on the number area */
+.score-box::before {
+  content:'';
+  position:absolute; inset:0;
+  background:repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,0.06) 0px, rgba(0,0,0,0.06) 1px,
+    transparent 1px, transparent 3px
+  );
+  pointer-events:none; z-index:1;
 }
+.score-box > * { position:relative; z-index:2; }
 
-.strip-list {
-  display: flex;
-  align-items: center;
-  flex: 1;
-  gap: 0;
+.runs-display {
+  font-family:'Orbitron', monospace;
+  font-size:clamp(28px,10vw,58px);
+  font-weight:900; line-height:1;
+  font-variant-numeric:tabular-nums;
+  letter-spacing:-0.02em;
+}
+.team-panel.home .runs-display { color:#c8e84a; text-shadow:0 0 20px rgba(200,232,74,0.55), 0 0 40px rgba(200,232,74,0.2); }
+.team-panel.away .runs-display { color:#7cc8ff; text-shadow:0 0 20px rgba(124,200,255,0.55), 0 0 40px rgba(124,200,255,0.2); }
+
+/* Dim "ghost" segments behind digits — classic LED effect */
+.runs-display .ghost {
+  opacity:0.06;
 }
 
-.strip-item {
-  flex: 1;
-  display: flex; flex-direction: column;
-  gap: clamp(2px, 0.6vw, 5px);
-  padding: 0 clamp(10px, 4vw, 36px);
+.wickets-overs {
+  display:flex; align-items:center; justify-content:center; gap:8px;
+  margin-top:5px;
 }
-.strip-item + .strip-item {
-  border-left: 1px solid rgba(0,0,0,0.08);
+.wkt-box {
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:6px;
+  padding:3px 8px;
+}
+.wkt-label {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(6px,1.5vw,8px);
+  font-weight:600;
+  color:rgba(255,255,255,0.28); letter-spacing:0.14em;
+  text-transform:uppercase; display:block;
+}
+.wkt-val {
+  font-family:'Orbitron', monospace;
+  font-size:clamp(12px,4vw,22px);
+  font-weight:700; color:#f5c842;
+  text-shadow:0 0 10px rgba(245,200,66,0.5);
+  line-height:1;
+}
+.ov-box {
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:6px;
+  padding:3px 8px;
+}
+.ov-label {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(6px,1.5vw,8px);
+  font-weight:600;
+  color:rgba(255,255,255,0.28); letter-spacing:0.14em;
+  text-transform:uppercase; display:block;
+}
+.ov-val {
+  font-family:'Orbitron', monospace;
+  font-size:clamp(12px,4vw,22px);
+  font-weight:700; color:#f5c842;
+  text-shadow:0 0 10px rgba(245,200,66,0.5);
+  line-height:1;
 }
 
-.strip-date {
-  font-size: clamp(7px, 1.7vw, 11px);
-  font-weight: 700;
-  color: rgba(0,0,0,0.3);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+/* Yet to bat state */
+.yet-box {
+  background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.07);
+  border-radius:10px; padding:14px 6px; text-align:center;
 }
-.strip-match {
-  font-size: clamp(12px, 3.5vw, 22px);
-  font-weight: 700;
-  color: rgba(0,0,0,0.8);
-  letter-spacing: -0.01em;
-  white-space: nowrap;
+.yet-dashes {
+  font-family:'Orbitron', monospace;
+  font-size:clamp(24px,8vw,44px); font-weight:900;
+  color:rgba(255,255,255,0.08); letter-spacing:0.1em; line-height:1;
 }
-.strip-match .sep {
-  font-weight: 400;
-  color: rgba(0,0,0,0.25);
-  margin: 0 0.6vw;
-  font-size: 0.82em;
+.yet-label {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(7px,1.8vw,9px); font-weight:600;
+  color:rgba(255,255,255,0.2); letter-spacing:0.12em;
+  text-transform:uppercase; margin-top:4px;
 }
-.strip-venue {
-  font-size: clamp(7px, 1.5vw, 10px);
-  color: rgba(0,0,0,0.28);
-  letter-spacing: 0.05em;
-  white-space: nowrap;
+
+/* ── CENTRE DIVIDER ── */
+.centre-col {
+  flex-shrink:0; width:clamp(64px,17vw,100px);
+  display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:6px;
+}
+.vs-board {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(10px,3.5vw,18px); font-weight:900;
+  color:rgba(255,255,255,0.07); letter-spacing:0.1em;
+}
+
+/* CRR/RRR boxes */
+.rate-block { display:flex; flex-direction:column; gap:4px; width:100%; }
+.rate-cell {
+  background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08);
+  border-radius:6px; padding:3px 6px;
+  display:flex; flex-direction:column; align-items:center;
+}
+.rate-cell-label {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(6px,1.4vw,8px); font-weight:600;
+  color:rgba(255,255,255,0.28); letter-spacing:0.14em; text-transform:uppercase;
+}
+.rate-cell-val {
+  font-family:'Orbitron', monospace;
+  font-size:clamp(11px,3.5vw,17px); font-weight:700; line-height:1.1;
+}
+.rate-cell-val.crr { color:#4ade80; text-shadow:0 0 8px rgba(74,222,128,0.5); }
+.rate-cell-val.rrr { color:#f87171; text-shadow:0 0 8px rgba(248,113,113,0.5); }
+
+/* Target pill */
+.target-pill {
+  background:rgba(37,99,235,0.15); border:1px solid rgba(37,99,235,0.3);
+  border-radius:6px; padding:3px 8px; text-align:center; width:100%;
+}
+.target-pill-label {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(6px,1.4vw,8px); font-weight:600;
+  color:rgba(255,255,255,0.28); letter-spacing:0.14em; text-transform:uppercase;
+}
+.target-pill-val {
+  font-family:'Orbitron', monospace;
+  font-size:clamp(13px,4vw,20px); font-weight:900;
+  color:#f5c842; text-shadow:0 0 10px rgba(245,200,66,0.55); line-height:1.1;
+}
+
+/* Match time (pre-match) */
+.match-time-board { text-align:center; }
+.mt-label {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(6px,1.5vw,8px); font-weight:600;
+  color:rgba(255,255,255,0.28); letter-spacing:0.14em; text-transform:uppercase;
+}
+.mt-val {
+  font-family:'Orbitron', monospace;
+  font-size:clamp(11px,3.5vw,16px); font-weight:700; color:#fff; line-height:1.2;
+}
+.mv-val {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(7px,1.8vw,9px); font-weight:500;
+  color:rgba(255,255,255,0.28); letter-spacing:0.06em; margin-top:2px;
+}
+
+/* Result text */
+.result-board {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(7px,2vw,10px); font-weight:600;
+  color:rgba(255,255,255,0.4); text-align:center; line-height:1.5;
+}
+
+/* ── LAST MATCH STRIP ── */
+.last-match-strip {
+  background:rgba(255,255,255,0.03);
+  border-top:1px solid rgba(255,255,255,0.07);
+  padding:7px 12px;
+}
+.lm-top {
+  display:flex; align-items:center; justify-content:space-between; margin-bottom:5px;
+}
+.lm-tag {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(6px,1.6vw,8px); font-weight:700;
+  color:rgba(255,255,255,0.28); letter-spacing:0.18em; text-transform:uppercase;
+}
+.lm-result-pill {
+  background:rgba(37,99,235,0.15); border:1px solid rgba(37,99,235,0.3);
+  border-radius:4px; padding:2px 9px;
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(6px,1.6vw,8px); font-weight:700;
+  color:#93c5fd; letter-spacing:0.04em;
+  max-width:58%; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;
+}
+.lm-scores-row {
+  display:flex; align-items:center; justify-content:space-between; gap:6px;
+}
+.lm-team-block { flex:1; display:flex; flex-direction:column; align-items:center; gap:1px; }
+.lm-city-name {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(8px,2.5vw,12px); font-weight:700;
+  color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.04em;
+}
+.lm-score-num {
+  font-family:'Orbitron', monospace;
+  font-size:clamp(14px,4.5vw,22px); font-weight:900;
+  color:#f5c842; line-height:1;
+  text-shadow:0 0 10px rgba(245,200,66,0.4);
+}
+.lm-ov {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(6px,1.6vw,8px); font-weight:500; color:rgba(255,255,255,0.25);
+}
+.lm-vs-mid {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(8px,2.5vw,12px); font-weight:900;
+  color:rgba(255,255,255,0.08); letter-spacing:0.06em;
+}
+.lm-venue-row {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(6px,1.4vw,8px); font-weight:500;
+  color:rgba(255,255,255,0.2); text-align:center;
+  letter-spacing:0.08em; text-transform:uppercase; margin-top:3px;
+}
+
+/* ── BOTTOM SCHEDULE STRIP ── */
+.schedule-strip {
+  background:rgba(0,0,0,0.2);
+  border-top:1px solid rgba(255,255,255,0.07);
+  display:flex; align-items:center;
+  padding:6px 12px; gap:0; overflow:hidden;
+}
+.sched-label {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(6px,1.6vw,8px); font-weight:800;
+  color:rgba(255,200,50,0.5); letter-spacing:0.2em; text-transform:uppercase;
+  flex-shrink:0; margin-right:10px;
+}
+.sched-list {
+  display:flex; flex:1; gap:0; align-items:center; overflow:hidden;
+}
+.sched-item {
+  flex:1; display:flex; flex-direction:column; gap:1px;
+  padding:0 10px; min-width:0;
+}
+.sched-item + .sched-item { border-left:1px solid rgba(255,255,255,0.07); }
+.sched-date {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(6px,1.5vw,8px); font-weight:700;
+  color:rgba(255,255,255,0.25); letter-spacing:0.12em; text-transform:uppercase;
+}
+.sched-teams {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(9px,2.8vw,13px); font-weight:700;
+  color:rgba(255,255,255,0.72); white-space:nowrap;
+  overflow:hidden; text-overflow:ellipsis;
+}
+.sched-teams .sep {
+  font-weight:400; color:rgba(255,255,255,0.2); margin:0 3px; font-size:0.85em;
+}
+.sched-venue {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(6px,1.4vw,7px); font-weight:500;
+  color:rgba(255,255,255,0.2); white-space:nowrap;
+}
+
+/* ── PRE-MATCH: clean team names + time, no empty score boxes ── */
+.prematch-area {
+  display:flex; align-items:center;
+  padding:14px 12px 12px; gap:8px;
+}
+.pm-home, .pm-away {
+  flex:1; display:flex; flex-direction:column; align-items:center; gap:3px;
+}
+.pm-tag {
+  font-size:clamp(7px,1.8vw,9px); font-weight:600;
+  letter-spacing:0.14em; color:rgba(255,255,255,0.28); text-transform:uppercase;
+}
+.pm-city {
+  font-size:clamp(18px,6.5vw,36px); font-weight:900;
+  letter-spacing:-0.02em; text-transform:uppercase; line-height:1;
+}
+.pm-home .pm-city { color:#a3e635; }
+.pm-away .pm-city { color:#60a5fa; }
+.pm-sub {
+  font-size:clamp(7px,1.8vw,9px); font-weight:500;
+  letter-spacing:0.12em; color:rgba(255,255,255,0.25); text-transform:uppercase;
+}
+.pm-centre {
+  flex-shrink:0; width:clamp(72px,18vw,108px);
+  display:flex; flex-direction:column; align-items:center; gap:4px;
+}
+.pm-vs {
+  font-size:clamp(9px,3vw,15px); font-weight:900; color:rgba(255,255,255,0.07);
+}
+.pm-time {
+  font-family:'Orbitron', monospace;
+  font-size:clamp(13px,4.2vw,22px); font-weight:700; color:#fff; line-height:1;
+}
+.pm-venue {
+  font-size:clamp(7px,1.8vw,9px); font-weight:500;
+  color:rgba(255,255,255,0.3); text-align:center; line-height:1.4;
 }
 </style>
 </head>
 <body>
 
-<div class="banner">
-  <div class="bg-pitch"></div>
-  <div class="bg-sky"></div>
+<div class="board">
 
-
-  <!-- ── TOP: centred header only ── -->
-  <div class="top-bar">
-    <div class="league-line">Indian Premier League</div>
-    <div class="season-line">2026</div>
-    <div class="header-rule"></div>
-    <div id="statusBadge">
-      <div class="badge upcoming"><span>7:30 PM IST</span></div>
+  <!-- Header -->
+  <div class="header">
+    <div class="header-league">Indian Premier League 2026</div>
+    <div class="header-badge" id="headerBadge">
+      <div class="header-match" id="headerMatch">Match 5 · Apr 1</div>
     </div>
   </div>
 
-  <!-- ── SCORES ── -->
-  <div class="score-zone">
-    <div class="team home">
-      <div class="city-name" id="homeCityName">Lucknow</div>
-      <div class="team-sub"  id="homeSubName">Super Giants</div>
-      <div class="score-card">
-        <div id="homeScore">
-          <div class="pre-state"><div class="pre-dash">—</div><div class="pre-label">Yet to bat</div></div>
-        </div>
+  <!-- Main score area (live/complete only) -->
+  <div class="score-area" id="scoreArea" style="display:none">
+
+    <!-- Home team -->
+    <div class="team-panel home">
+      <div class="team-label-row">
+        <div class="batting-indicator" id="homeBatIndicator"></div>
+        <div class="team-tag">Home</div>
       </div>
+      <div class="team-city" id="homeCityName">Kolkata</div>
+      <div id="homeScoreBlock"></div>
     </div>
 
-    <div class="vs-col">
-      <div class="vs-text">VS</div>
-      <div id="vsCenter">
-        <div class="match-time"  id="matchTime">7:30 PM</div>
-        <div class="match-venue" id="matchVenue">Apr 1 · Lucknow</div>
-      </div>
+    <!-- Centre -->
+    <div class="centre-col">
+      <div class="vs-board">VS</div>
+      <div id="centreContent"></div>
     </div>
 
-    <div class="team away">
-      <div class="city-name" id="awayCityName">Delhi</div>
-      <div class="team-sub"  id="awaySubName">Capitals</div>
-      <div class="score-card">
-        <div id="awayScore">
-          <div class="pre-state"><div class="pre-dash">—</div><div class="pre-label">Yet to bat</div></div>
-        </div>
+    <!-- Away team -->
+    <div class="team-panel away">
+      <div class="team-label-row">
+        <div class="team-tag">Away</div>
+        <div class="batting-indicator" id="awayBatIndicator"></div>
       </div>
+      <div class="team-city" id="awayCityName">Hyderabad</div>
+      <div id="awayScoreBlock"></div>
+    </div>
+
+  </div>
+
+  <!-- Pre-match: team names + time only (no score boxes) -->
+  <div class="prematch-area" id="prematchArea">
+    <div class="pm-home">
+      <div class="pm-tag">Home</div>
+      <div class="pm-city" id="pmHomeCityName">Kolkata</div>
+      <div class="pm-sub" id="pmHomeSubName">Knight Riders</div>
+    </div>
+    <div class="pm-centre">
+      <div class="pm-vs">VS</div>
+      <div class="pm-time" id="pmTime">7:30 PM</div>
+      <div class="pm-venue" id="pmVenue">Apr 2 · Kolkata</div>
+    </div>
+    <div class="pm-away">
+      <div class="pm-tag">Away</div>
+      <div class="pm-city" id="pmAwayCityName">Hyderabad</div>
+      <div class="pm-sub" id="pmAwaySubName">Sunrisers</div>
     </div>
   </div>
 
-  <!-- ── STRIP: 2 matches ── -->
-  <div class="strip">
-    <div class="strip-label">Next Up</div>
-    <div class="strip-list" id="stripList"></div>
+  <!-- Last match strip (pre-match only) -->
+  <div class="last-match-strip" id="lastMatchStrip">
+    <div class="lm-top">
+      <div class="lm-tag">Last Match</div>
+      <div class="lm-result-pill" id="lmResult">—</div>
+    </div>
+    <div class="lm-scores-row">
+      <div class="lm-team-block">
+        <div class="lm-city-name" id="lmHomeCity">—</div>
+        <div class="lm-score-num" id="lmHomeScore">—</div>
+        <div class="lm-ov" id="lmHomeOv"></div>
+      </div>
+      <div class="lm-vs-mid">VS</div>
+      <div class="lm-team-block">
+        <div class="lm-city-name" id="lmAwayCity">—</div>
+        <div class="lm-score-num" id="lmAwayScore">—</div>
+        <div class="lm-ov" id="lmAwayOv"></div>
+      </div>
+    </div>
+    <div class="lm-venue-row" id="lmVenue"></div>
   </div>
+
+  <!-- Schedule strip -->
+  <div class="schedule-strip">
+    <div class="sched-label">Next Up</div>
+    <div class="sched-list" id="schedList"></div>
+  </div>
+
 </div>
 
 <script>
@@ -329,55 +526,131 @@ const TEAMS = {
 };
 
 const SCHEDULE = [
+  // Phase 1 (confirmed results)
+  { date:'Mar 28', matchNo:1,  home:'RCB',  away:'SRH',  time:'7:30 PM', venue:'Bangalore' },
+  { date:'Mar 29', matchNo:2,  home:'KKR',  away:'MI',   time:'7:30 PM', venue:'Kolkata'   },
+  { date:'Mar 30', matchNo:3,  home:'CSK',  away:'RR',   time:'7:30 PM', venue:'Chennai'   },
+  { date:'Apr 1',  matchNo:4,  home:'PBKS', away:'GT',   time:'7:30 PM', venue:'Mullanpur' },
   { date:'Apr 1',  matchNo:5,  home:'LSG',  away:'DC',   time:'7:30 PM', venue:'Lucknow'   },
+  // Phase 2
   { date:'Apr 2',  matchNo:6,  home:'KKR',  away:'SRH',  time:'7:30 PM', venue:'Kolkata'   },
   { date:'Apr 3',  matchNo:7,  home:'CSK',  away:'PBKS', time:'7:30 PM', venue:'Chennai'   },
-  { date:'Apr 4',  matchNo:8,  home:'DC',   away:'GT',   time:'3:30 PM', venue:'Delhi'     },
-  { date:'Apr 5',  matchNo:9,  home:'SRH',  away:'LSG',  time:'7:30 PM', venue:'Hyderabad' },
-  { date:'Apr 6',  matchNo:10, home:'RCB',  away:'CSK',  time:'7:30 PM', venue:'Bangalore' },
-  { date:'Apr 7',  matchNo:11, home:'KKR',  away:'PBKS', time:'7:30 PM', venue:'Kolkata'   },
-  { date:'Apr 8',  matchNo:12, home:'RR',   away:'MI',   time:'7:30 PM', venue:'Guwahati'  },
-  { date:'Apr 9',  matchNo:13, home:'DC',   away:'GT',   time:'7:30 PM', venue:'Delhi'     },
-  { date:'Apr 10', matchNo:14, home:'LSG',  away:'RCB',  time:'7:30 PM', venue:'Lucknow'   },
-  { date:'Apr 11', matchNo:15, home:'MI',   away:'SRH',  time:'7:30 PM', venue:'Mumbai'    },
-  { date:'Apr 12', matchNo:16, home:'CSK',  away:'KKR',  time:'3:30 PM', venue:'Chennai'   },
-  { date:'Apr 13', matchNo:17, home:'GT',   away:'PBKS', time:'7:30 PM', venue:'Ahmedabad' },
-  { date:'Apr 14', matchNo:18, home:'RR',   away:'DC',   time:'7:30 PM', venue:'Jaipur'    },
-  { date:'Apr 15', matchNo:19, home:'MI',   away:'LSG',  time:'7:30 PM', venue:'Mumbai'    },
-  { date:'Apr 16', matchNo:20, home:'RCB',  away:'SRH',  time:'7:30 PM', venue:'Bangalore' },
-  { date:'Apr 17', matchNo:21, home:'KKR',  away:'GT',   time:'7:30 PM', venue:'Kolkata'   },
-  { date:'Apr 18', matchNo:22, home:'PBKS', away:'RR',   time:'7:30 PM', venue:'Mullanpur' },
-  { date:'Apr 19', matchNo:23, home:'DC',   away:'CSK',  time:'3:30 PM', venue:'Delhi'     },
-  { date:'Apr 20', matchNo:24, home:'MI',   away:'RCB',  time:'7:30 PM', venue:'Mumbai'    },
+  { date:'Apr 4',  matchNo:8,  home:'DC',   away:'MI',   time:'3:30 PM', venue:'Delhi'     },
+  { date:'Apr 4',  matchNo:9,  home:'GT',   away:'RR',   time:'7:30 PM', venue:'Ahmedabad' },
+  { date:'Apr 5',  matchNo:10, home:'SRH',  away:'LSG',  time:'7:30 PM', venue:'Hyderabad' },
+  { date:'Apr 6',  matchNo:11, home:'RCB',  away:'CSK',  time:'7:30 PM', venue:'Bangalore' },
+  { date:'Apr 6',  matchNo:12, home:'KKR',  away:'PBKS', time:'3:30 PM', venue:'Kolkata'   },
+  { date:'Apr 7',  matchNo:13, home:'RR',   away:'MI',   time:'7:30 PM', venue:'Guwahati'  },
+  { date:'Apr 8',  matchNo:14, home:'DC',   away:'GT',   time:'7:30 PM', venue:'Delhi'     },
+  { date:'Apr 9',  matchNo:15, home:'KKR',  away:'LSG',  time:'7:30 PM', venue:'Kolkata'   },
+  { date:'Apr 10', matchNo:16, home:'RR',   away:'RCB',  time:'7:30 PM', venue:'Guwahati'  },
+  { date:'Apr 11', matchNo:17, home:'PBKS', away:'SRH',  time:'7:30 PM', venue:'Mullanpur' },
+  { date:'Apr 12', matchNo:18, home:'CSK',  away:'DC',   time:'3:30 PM', venue:'Chennai'   },
+  { date:'Apr 12', matchNo:19, home:'GT',   away:'MI',   time:'7:30 PM', venue:'Ahmedabad' },
+  { date:'Apr 13', matchNo:20, home:'LSG',  away:'RCB',  time:'7:30 PM', venue:'Lucknow'   },
+  { date:'Apr 14', matchNo:21, home:'SRH',  away:'KKR',  time:'7:30 PM', venue:'Hyderabad' },
+  { date:'Apr 15', matchNo:22, home:'MI',   away:'PBKS', time:'7:30 PM', venue:'Mumbai'    },
+  { date:'Apr 16', matchNo:23, home:'RCB',  away:'GT',   time:'7:30 PM', venue:'Bangalore' },
+  { date:'Apr 16', matchNo:24, home:'RR',   away:'DC',   time:'3:30 PM', venue:'Jaipur'    },
+  { date:'Apr 17', matchNo:25, home:'CSK',  away:'LSG',  time:'7:30 PM', venue:'Chennai'   },
+  { date:'Apr 18', matchNo:26, home:'KKR',  away:'GT',   time:'7:30 PM', venue:'Kolkata'   },
+  { date:'Apr 19', matchNo:27, home:'PBKS', away:'RR',   time:'3:30 PM', venue:'Mullanpur' },
+  { date:'Apr 19', matchNo:28, home:'MI',   away:'SRH',  time:'7:30 PM', venue:'Mumbai'    },
+  { date:'Apr 20', matchNo:29, home:'DC',   away:'RCB',  time:'7:30 PM', venue:'Delhi'     },
+  { date:'Apr 21', matchNo:30, home:'LSG',  away:'KKR',  time:'7:30 PM', venue:'Lucknow'   },
+  { date:'Apr 22', matchNo:31, home:'GT',   away:'CSK',  time:'7:30 PM', venue:'Ahmedabad' },
+  { date:'Apr 23', matchNo:32, home:'SRH',  away:'MI',   time:'7:30 PM', venue:'Hyderabad' },
+  { date:'Apr 24', matchNo:33, home:'RCB',  away:'PBKS', time:'7:30 PM', venue:'Raipur'    },
+  { date:'Apr 25', matchNo:34, home:'RR',   away:'KKR',  time:'7:30 PM', venue:'Jaipur'    },
+  { date:'Apr 26', matchNo:35, home:'DC',   away:'LSG',  time:'3:30 PM', venue:'Delhi'     },
+  { date:'Apr 26', matchNo:36, home:'CSK',  away:'GT',   time:'7:30 PM', venue:'Chennai'   },
+  { date:'Apr 27', matchNo:37, home:'MI',   away:'RCB',  time:'7:30 PM', venue:'Mumbai'    },
+  { date:'Apr 28', matchNo:38, home:'SRH',  away:'PBKS', time:'7:30 PM', venue:'Hyderabad' },
+  { date:'Apr 29', matchNo:39, home:'KKR',  away:'RR',   time:'7:30 PM', venue:'Kolkata'   },
+  { date:'Apr 30', matchNo:40, home:'GT',   away:'DC',   time:'7:30 PM', venue:'Ahmedabad' },
+  { date:'May 1',  matchNo:41, home:'LSG',  away:'MI',   time:'7:30 PM', venue:'Lucknow'   },
+  { date:'May 2',  matchNo:42, home:'RCB',  away:'SRH',  time:'3:30 PM', venue:'Raipur'    },
+  { date:'May 2',  matchNo:43, home:'CSK',  away:'KKR',  time:'7:30 PM', venue:'Chennai'   },
+  { date:'May 3',  matchNo:44, home:'PBKS', away:'GT',   time:'7:30 PM', venue:'Mullanpur' },
+  { date:'May 4',  matchNo:45, home:'MI',   away:'DC',   time:'7:30 PM', venue:'Mumbai'    },
+  { date:'May 5',  matchNo:46, home:'RR',   away:'LSG',  time:'7:30 PM', venue:'Jaipur'    },
 ];
 
+const LAST_RESULTS = {
+  // Index in SCHEDULE array → last match result to show before this match starts
+  5: { // Before KKR vs SRH (Match 6, Apr 2) — show LSG vs DC result
+    homeCity:'Delhi', awayCity:'Lucknow',
+    homeScore:'145/4', homeOv:'17.1 ov',
+    awayScore:'141/10', awayOv:'18.4 ov',
+    result:'Delhi won by 6 wkts',
+    venue:'Lucknow · Apr 1'
+  },
+  6: { // Before CSK vs PBKS (Match 7, Apr 3) — show KKR vs SRH result (TBD tonight)
+    homeCity:'Kolkata', awayCity:'Hyderabad',
+    homeScore:'—', homeOv:'',
+    awayScore:'—', awayOv:'',
+    result:'Apr 2 result pending',
+    venue:'Kolkata · Apr 2'
+  },
+  7: { // Before DC vs MI (Match 8, Apr 4)
+    homeCity:'Chennai', awayCity:'Punjab',
+    homeScore:'—', homeOv:'',
+    awayScore:'—', awayOv:'',
+    result:'Apr 3 result pending',
+    venue:'Chennai · Apr 3'
+  },
+};
+
 let state = {
-  status: 'upcoming', matchIdx: 0,
-  home: { runs:null, wickets:null, overs:null },
-  away: { runs:null, wickets:null, overs:null },
-  crr: null, result: null,
+  status:'upcoming', matchIdx:4,
+  home:{ runs:null, wickets:null, overs:null, allOut:false },
+  away:{ runs:null, wickets:null, overs:null, allOut:false },
+  crr:null, rrr:null, result:null, target:null,
 };
 
 const $ = id => document.getElementById(id);
 
-function todayMatchIndex() {
+function todayIdx() {
   const now = new Date();
   const key = `${now.toLocaleString('en-US',{month:'short'})} ${now.getDate()}`;
-  const idx = SCHEDULE.findIndex(m => m.date === key);
-  return idx >= 0 ? idx : 0;
+  // Find last match on today's date (handles double-header days — show the evening match)
+  let last = -1;
+  for (let i = 0; i < SCHEDULE.length; i++) {
+    if (SCHEDULE[i].date === key) last = i;
+  }
+  return last >= 0 ? last : 5; // default to match 6 (KKR vs SRH, Apr 2)
 }
 
-function scoreHTML(team) {
-  if (team.runs === null) {
-    return `<div class="pre-state"><div class="pre-dash">—</div><div class="pre-label">Yet to bat</div></div>`;
-  }
-  const ov = team.overs !== null ? `${team.overs} ov` : '';
+// Check if match has started based on scheduled time
+function matchHasStarted(m) {
+  const now  = new Date();
+  const [time, ampm] = m.time.split(' ');
+  let [h, min] = time.split(':').map(Number);
+  if (ampm === 'PM' && h !== 12) h += 12;
+  if (ampm === 'AM' && h === 12) h = 0;
+  const matchStart = new Date(now);
+  matchStart.setHours(h, min - 5, 0, 0); // 5 min grace before scheduled time
+  return now >= matchStart;
+}
+
+function scoreBlockHTML(t) {
+  if (t.runs === null) return '';
+  const wktVal = t.allOut ? '10' : String(t.wickets);
+  const ovVal  = t.overs != null ? String(t.overs) : '—';
   return `
-    <div class="score-main">
-      <span class="score-runs">${team.runs}</span>
-      <span class="score-wkt">/${team.wickets}</span>
-    </div>
-    ${ov ? `<div class="score-ov">${ov}</div>` : ''}`;
+    <div class="score-box">
+      <div class="runs-display">${t.runs}</div>
+      <div class="wickets-overs">
+        <div class="wkt-box">
+          <span class="wkt-label">Wkts</span>
+          <span class="wkt-val">${wktVal}</span>
+        </div>
+        <div class="ov-box">
+          <span class="ov-label">Overs</span>
+          <span class="ov-val">${ovVal}</span>
+        </div>
+      </div>
+    </div>`;
 }
 
 function render() {
@@ -386,102 +659,188 @@ function render() {
   const H   = TEAMS[m.home] || { city:m.home, sub:'', short:m.home };
   const A   = TEAMS[m.away] || { city:m.away, sub:'', short:m.away };
 
-  $('homeCityName').textContent = H.city;
-  $('homeSubName').textContent  = H.sub;
-  $('awayCityName').textContent = A.city;
-  $('awaySubName').textContent  = A.sub;
+  // Header match label
+  $('headerMatch').textContent = `Match ${m.matchNo} · ${m.date}`;
 
-  // Badge
-  const badge = $('statusBadge');
+  // Header badge
+  const hb = $('headerBadge');
   if (state.status === 'live') {
-    badge.innerHTML = `<div class="badge live"><div class="live-dot"></div><span>Live Now</span></div>`;
+    hb.innerHTML = `<div class="live-dot"></div><span class="live-label">Live</span>`;
   } else if (state.status === 'complete') {
-    badge.innerHTML = `<div class="badge final"><span>Full Time</span></div>`;
+    hb.innerHTML = `<span class="header-match">Finished</span>`;
   } else {
-    badge.innerHTML = `<div class="badge upcoming"><span>${m.time} IST · ${m.date}</span></div>`;
+    hb.innerHTML = `<span class="header-match">Match ${m.matchNo} · ${m.date}</span>`;
   }
 
-  // VS centre
-  const vc = $('vsCenter');
-  if (state.status === 'live' && state.crr !== null) {
-    vc.innerHTML = `<div class="crr-box"><div class="crr-label">CRR</div><div class="crr-val">${state.crr}</div></div>`;
-  } else if (state.result) {
-    vc.innerHTML = `<div class="result-text">${state.result}</div>`;
+  const isPreMatch = state.status === 'upcoming' && !matchHasStarted(m);
+  const scoreArea   = $('scoreArea');
+  const prematchArea = $('prematchArea');
+  const lastMatchStrip = $('lastMatchStrip');
+
+  if (isPreMatch) {
+    // ── PRE-MATCH: show team names + last match, hide score boxes ──
+    scoreArea.style.display    = 'none';
+    prematchArea.style.display = 'flex';
+
+    $('pmHomeCityName').textContent = H.city;
+    $('pmHomeSubName').textContent  = H.sub;
+    $('pmAwayCityName').textContent = A.city;
+    $('pmAwaySubName').textContent  = A.sub;
+    $('pmTime').textContent  = m.time;
+    $('pmVenue').textContent = `${m.date} · ${m.venue}`;
+
+    // Last match card
+    const lr = LAST_RESULTS[idx];
+    if (lr) {
+      lastMatchStrip.style.display = 'block';
+      $('lmResult').textContent    = lr.result;
+      $('lmHomeCity').textContent  = lr.homeCity;
+      $('lmAwayCity').textContent  = lr.awayCity;
+      $('lmHomeScore').textContent = lr.homeScore;
+      $('lmAwayScore').textContent = lr.awayScore;
+      $('lmHomeOv').textContent    = lr.homeOv || '';
+      $('lmAwayOv').textContent    = lr.awayOv || '';
+      $('lmVenue').textContent     = lr.venue || '';
+    } else {
+      lastMatchStrip.style.display = 'none';
+    }
+
   } else {
-    vc.innerHTML = `<div class="match-time">${m.time}</div><div class="match-venue">${m.date} · ${m.venue}</div>`;
+    // ── LIVE / COMPLETE / POST-START: show score boxes, hide pre-match ──
+    scoreArea.style.display    = 'flex';
+    prematchArea.style.display = 'none';
+    lastMatchStrip.style.display = 'none';
+
+    $('homeCityName').textContent = H.city;
+    $('awayCityName').textContent = A.city;
+
+    // Batting indicators
+    const hBat = state.home.runs !== null && !state.home.allOut && state.away.runs === null;
+    const aBat = state.away.runs !== null && !state.away.allOut;
+    $('homeBatIndicator').className = 'batting-indicator' + (hBat ? ' show' : '');
+    $('awayBatIndicator').className = 'batting-indicator' + (aBat ? ' show' : '');
+
+    // Score blocks — show yet-to-bat box if no runs yet (1st innings only)
+    $('homeScoreBlock').innerHTML = state.home.runs !== null
+      ? scoreBlockHTML(state.home)
+      : `<div class="yet-box"><div class="yet-dashes">---</div><div class="yet-label">Yet to bat</div></div>`;
+    $('awayScoreBlock').innerHTML = state.away.runs !== null
+      ? scoreBlockHTML(state.away)
+      : `<div class="yet-box"><div class="yet-dashes">---</div><div class="yet-label">Yet to bat</div></div>`;
+
+    // Centre
+    const cc = $('centreContent');
+    if (state.status === 'live') {
+      const c = state.crr ? state.crr.toFixed(2) : '—';
+      const r = state.rrr ? state.rrr.toFixed(2) : '—';
+      let html = `<div class="rate-block">`;
+      if (state.target) html += `<div class="target-pill"><div class="target-pill-label">Target</div><div class="target-pill-val">${state.target}</div></div>`;
+      html += `<div class="rate-cell"><span class="rate-cell-label">CRR</span><span class="rate-cell-val crr">${c}</span></div>
+               <div class="rate-cell"><span class="rate-cell-label">RRR</span><span class="rate-cell-val rrr">${r}</span></div></div>`;
+      cc.innerHTML = html;
+    } else if (state.status === 'complete' && state.result) {
+      cc.innerHTML = `<div class="result-board">${state.result}</div>`;
+    } else {
+      // Match started but fetch hasn't confirmed live yet — show VS + time
+      cc.innerHTML = `<div class="match-time-board"><div class="mt-label">Started</div><div class="mt-val">${m.time}</div></div>`;
+    }
   }
 
-  $('homeScore').innerHTML = scoreHTML(state.home);
-  $('awayScore').innerHTML = scoreHTML(state.away);
-
-  // Strip — exactly 2 next matches
+  // Schedule strip — always show
   const next = SCHEDULE.slice(idx + 1, idx + 3);
-  $('stripList').innerHTML = next.map(nm => {
-    const h = TEAMS[nm.home] || { short: nm.home };
-    const a = TEAMS[nm.away] || { short: nm.away };
-    return `
-      <div class="strip-item">
-        <div class="strip-date">${nm.date}</div>
-        <div class="strip-match">${h.short}<span class="sep">vs</span>${a.short}</div>
-        <div class="strip-venue">${nm.venue} · ${nm.time}</div>
-      </div>`;
+  $('schedList').innerHTML = next.map(nm => {
+    const h = TEAMS[nm.home] || { short:nm.home };
+    const a = TEAMS[nm.away] || { short:nm.away };
+    return `<div class="sched-item">
+      <div class="sched-date">${nm.date}</div>
+      <div class="sched-teams">${h.short}<span class="sep">vs</span>${a.short}</div>
+      <div class="sched-venue">${nm.venue} · ${nm.time}</div>
+    </div>`;
   }).join('');
 }
 
 // ── Live fetch ──
-const PROXY  = 'https://api.allorigins.win/get?url=';
-const CB_URL = 'https://www.cricbuzz.com/live-cricket-scores/149662/lsg-vs-dc-5th-match-indian-premier-league-2026';
+const PROXY = 'https://api.allorigins.win/get?url=';
+
+// Build URL dynamically from today's match
+function getScoreUrl(m) {
+  const dateStr = m.date.toLowerCase().replace(' ', '-');
+  const home    = m.home.toLowerCase();
+  const away    = m.away.toLowerCase();
+  return `https://www.crictracker.com/live-scores/${home}-vs-${away}-match-${m.matchNo}-t20-indian-premier-league-${dateStr}-2026/`;
+}
 
 async function fetchScore() {
+  const m = SCHEDULE[state.matchIdx];
+  // Don't fetch if match hasn't started yet
+  if (!matchHasStarted(m)) return;
+
+  const url = getScoreUrl(m);
   try {
-    const r    = await fetch(PROXY + encodeURIComponent(CB_URL), { cache:'no-store' });
+    const r    = await fetch(PROXY + encodeURIComponent(url), { cache:'no-store' });
     const data = await r.json();
     const html = data.contents;
     if (!html) return;
+    const doc   = new DOMParser().parseFromString(html, 'text/html');
+    const full  = (doc.querySelector('title')?.textContent || '') + ' ' + (doc.body?.textContent || '');
 
-    const doc  = new DOMParser().parseFromString(html, 'text/html');
-    const body = doc.body ? doc.body.textContent : '';
-    const isDone = /won by|match tied/i.test(body);
-    const isLive = !isDone && /\bCRR\b|\blive\b/i.test(body);
+    const isDone = /won by|match tied|won the match/i.test(full);
+    const isLive = !isDone && /\bCRR\b|\bRRR\b|\bPlay Ongoing\b/i.test(full);
 
     if (isDone) {
       state.status = 'complete';
-      const rm = body.match(/([A-Z][A-Za-z\s]+(?:won by|tied)[^\.]+)/);
-      state.result = rm ? rm[0].trim().slice(0, 80) : 'Match Complete';
-    } else if (isLive) {
-      state.status = 'live';
-    } else {
-      state.status = 'upcoming';
+      const homeTeam = TEAMS[m.home]?.city || m.home;
+      const awayTeam = TEAMS[m.away]?.city || m.away;
+      const pattern  = new RegExp(`((?:${homeTeam}|${awayTeam}|${m.home}|${m.away})[^\\.]{0,70}(?:won by|tied)[^\\.]{0,60})`, 'i');
+      const rm = full.match(pattern);
+      state.result = rm ? rm[0].trim().replace(/\s+/g,' ') : 'Match Complete';
+      return;
+    }
+    if (isLive) state.status = 'live';
+
+    const rx = /(\d{1,3})\/(\d{1,2})\s*[\(\[]?\s*(\d+\.?\d*)\s*(?:ov|overs?)/gi;
+    const found = []; let mx;
+    while ((mx = rx.exec(full)) !== null)
+      found.push({ runs:+mx[1], wickets:+mx[2], overs:parseFloat(mx[3]) });
+
+    const dcFirst = full.indexOf('DC') < full.indexOf('LSG');
+    const dcBats  = /DC\s*\*/i.test(full);
+
+    if (found.length >= 2) {
+      if (dcBats || dcFirst) {
+        state.away = { ...found[0], allOut: found[0].wickets >= 10 };
+        state.home = { ...found[1], allOut: found[1].wickets >= 10 };
+      } else {
+        state.home = { ...found[0], allOut: found[0].wickets >= 10 };
+        state.away = { ...found[1], allOut: found[1].wickets >= 10 };
+      }
+    } else if (found.length === 1) {
+      const lsgBats = /LSG\s*\*/i.test(full);
+      const t = { ...found[0], allOut: found[0].wickets >= 10 };
+      if (lsgBats) state.home = t; else state.away = t;
     }
 
-    const scoreRx = /(\d{1,3})\/(\d)\s*[\(\[](\d+\.?\d*)\s*ov/gi;
-    const found = []; let mx;
-    const src = (doc.querySelector('title')?.textContent || '') + ' ' + body;
-    while ((mx = scoreRx.exec(src)) !== null) found.push({ runs:+mx[1], wickets:+mx[2], overs:parseFloat(mx[3]) });
-    if (!found.length) {
-      const s2 = /\b(\d{2,3})\/(\d)\b/g;
-      while ((mx = s2.exec(src)) !== null) found.push({ runs:+mx[1], wickets:+mx[2], overs:null });
-    }
-    if (found[0]) Object.assign(state.home, found[0]);
-    if (found[1]) Object.assign(state.away, found[1]);
-    const cm = body.match(/CRR\s*:?\s*([\d.]+)/i);
-    if (cm) state.crr = parseFloat(cm[1]);
-  } catch(e) { console.warn('Fetch failed', e.message); }
+    const crrM = full.match(/CRR\s*[:\|]?\s*([\d.]+)/i);
+    const rrrM = full.match(/RRR\s*[:\|]?\s*([\d.]+)/i);
+    const tgtM = full.match(/(?:need|chasing|target\s*of)\s*(\d{2,3})/i);
+    if (crrM) state.crr = parseFloat(crrM[1]);
+    if (rrrM) state.rrr = parseFloat(rrrM[1]);
+    if (tgtM) state.target = parseInt(tgtM[1]);
+
+  } catch(e) { console.warn('Fetch:', e.message); }
 }
 
 async function tick() {
-  state.matchIdx = todayMatchIndex();
+  state.matchIdx = todayIdx();
   await fetchScore();
   render();
 }
 
 tick();
-
-let refreshMs = 120_000;
-let timer = setInterval(tick, refreshMs);
+let ms = 120_000, timer = setInterval(tick, ms);
 setInterval(() => {
-  const target = state.status === 'live' ? 30_000 : 120_000;
-  if (target !== refreshMs) { clearInterval(timer); refreshMs = target; timer = setInterval(tick, refreshMs); }
+  const t = state.status === 'live' ? 30_000 : 120_000;
+  if (t !== ms) { clearInterval(timer); ms = t; timer = setInterval(tick, ms); }
 }, 15_000);
 </script>
 </body>
