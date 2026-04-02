@@ -69,444 +69,249 @@ html, body {
   letter-spacing:0.08em;
 }
 
-/* ── MAIN SCORE AREA ── */
-.score-area {
+/* ── MAIN CONTENT AREA ── */
+.content-area {
+  padding: clamp(10px,3vw,20px) clamp(12px,4vw,24px) clamp(8px,2.5vw,16px);
+}
+
+/* ── STATUS LABEL (LAST MATCH / LIVE) ── */
+.status-label {
+  text-align:center;
+  font-size:clamp(8px,2vw,12px);
+  font-weight:700;
+  letter-spacing:0.22em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.35);
+  margin-bottom:clamp(8px,2.5vw,16px);
+}
+.status-label.is-live {
+  color:#4ade80;
+  display:flex; align-items:center; justify-content:center; gap:7px;
+}
+
+/* ── SCORE ROW ── */
+.score-row {
   display:flex;
-  align-items:stretch;
-  padding:10px 10px 8px;
+  align-items:flex-start;
+  justify-content:space-between;
   gap:8px;
 }
 
-/* ── TEAM PANEL ── */
-.team-panel {
+/* ── TEAM BLOCK ── */
+.team-block {
   flex:1;
   display:flex; flex-direction:column;
-  gap:5px;
+  align-items:center;
+  gap:clamp(2px,0.8vw,6px);
 }
-
-/* Team name label row */
-.team-label-row {
-  display:flex; align-items:center; justify-content:center; gap:6px;
-}
-.team-tag {
-  font-family:'Poppins', sans-serif;
-  font-size:clamp(7px,1.8vw,9px);
-  font-weight:600; letter-spacing:0.14em;
-  color:rgba(255,255,255,0.28);
-  text-transform:uppercase;
-}
-.batting-indicator {
-  width:6px; height:6px;
-  background:#f5c842;
-  border-radius:50%;
-  box-shadow:0 0 5px rgba(245,200,66,0.8);
-  display:none;
-}
-.batting-indicator.show { display:block; }
-
-/* City name on the board */
-.team-city {
-  font-family:'Poppins', sans-serif;
-  font-size:clamp(14px,5vw,28px);
-  font-weight:900; letter-spacing:-0.02em;
-  text-align:center; text-transform:uppercase;
-  line-height:1;
-}
-.team-panel.home .team-city { color:#a3e635; }
-.team-panel.away .team-city { color:#60a5fa; }
-
-/* ── DIGITAL SCORE BOX ── */
-.score-box {
-  background:rgba(0,0,0,0.25);
-  border:1px solid rgba(255,255,255,0.09);
-  border-radius:10px;
-  padding:8px 6px 6px;
-  text-align:center;
-  position:relative;
-  overflow:hidden;
-}
-/* LED scanline texture — only on the number area */
-.score-box::before {
-  content:'';
-  position:absolute; inset:0;
-  background:repeating-linear-gradient(
-    0deg,
-    rgba(0,0,0,0.06) 0px, rgba(0,0,0,0.06) 1px,
-    transparent 1px, transparent 3px
-  );
-  pointer-events:none; z-index:1;
-}
-.score-box > * { position:relative; z-index:2; }
-
-.runs-display {
-  font-family:'Orbitron', monospace;
-  font-size:clamp(28px,10vw,58px);
-  font-weight:900; line-height:1;
-  font-variant-numeric:tabular-nums;
+.t-city {
+  font-size:clamp(16px,5.5vw,32px);
+  font-weight:900;
   letter-spacing:-0.02em;
-}
-.team-panel.home .runs-display { color:#c8e84a; text-shadow:0 0 20px rgba(200,232,74,0.55), 0 0 40px rgba(200,232,74,0.2); }
-.team-panel.away .runs-display { color:#7cc8ff; text-shadow:0 0 20px rgba(124,200,255,0.55), 0 0 40px rgba(124,200,255,0.2); }
-
-/* Dim "ghost" segments behind digits — classic LED effect */
-.runs-display .ghost {
-  opacity:0.06;
-}
-
-.wickets-overs {
-  display:flex; align-items:center; justify-content:center; gap:8px;
-  margin-top:5px;
-}
-.wkt-box {
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:6px;
-  padding:3px 8px;
-}
-.wkt-label {
-  font-family:'Poppins', sans-serif;
-  font-size:clamp(6px,1.5vw,8px);
-  font-weight:600;
-  color:rgba(255,255,255,0.28); letter-spacing:0.14em;
-  text-transform:uppercase; display:block;
-}
-.wkt-val {
-  font-family:'Orbitron', monospace;
-  font-size:clamp(12px,4vw,22px);
-  font-weight:700; color:#f5c842;
-  text-shadow:0 0 10px rgba(245,200,66,0.5);
+  text-transform:uppercase;
   line-height:1;
+  text-align:center;
 }
-.ov-box {
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:6px;
-  padding:3px 8px;
-}
-.ov-label {
-  font-family:'Poppins', sans-serif;
-  font-size:clamp(6px,1.5vw,8px);
-  font-weight:600;
-  color:rgba(255,255,255,0.28); letter-spacing:0.14em;
-  text-transform:uppercase; display:block;
-}
-.ov-val {
+.team-block.home .t-city { color:#a3e635; }
+.team-block.away .t-city { color:#60a5fa; }
+
+.t-score {
   font-family:'Orbitron', monospace;
-  font-size:clamp(12px,4vw,22px);
-  font-weight:700; color:#f5c842;
-  text-shadow:0 0 10px rgba(245,200,66,0.5);
+  font-size:clamp(28px,10vw,60px);
+  font-weight:900;
+  letter-spacing:-0.03em;
   line-height:1;
+  font-variant-numeric:tabular-nums;
+  text-align:center;
 }
+.team-block.home .t-score { color:#c8e84a; text-shadow:0 0 20px rgba(200,232,74,0.4); }
+.team-block.away .t-score { color:#7cc8ff; text-shadow:0 0 20px rgba(124,200,255,0.4); }
 
-/* Yet to bat state */
-.yet-box {
-  background:rgba(0,0,0,0.2); border:1px solid rgba(255,255,255,0.07);
-  border-radius:10px; padding:14px 6px; text-align:center;
-}
-.yet-dashes {
+.t-wkt {
   font-family:'Orbitron', monospace;
-  font-size:clamp(24px,8vw,44px); font-weight:900;
-  color:rgba(255,255,255,0.08); letter-spacing:0.1em; line-height:1;
-}
-.yet-label {
-  font-family:'Poppins', sans-serif;
-  font-size:clamp(7px,1.8vw,9px); font-weight:600;
-  color:rgba(255,255,255,0.2); letter-spacing:0.12em;
-  text-transform:uppercase; margin-top:4px;
+  font-size:clamp(16px,5.5vw,32px);
+  font-weight:700;
+  color:rgba(255,255,255,0.35);
 }
 
-/* ── CENTRE DIVIDER ── */
-.centre-col {
-  flex-shrink:0; width:clamp(64px,17vw,100px);
+.t-overs {
+  font-size:clamp(9px,2.5vw,14px);
+  font-weight:500;
+  color:rgba(255,255,255,0.35);
+  letter-spacing:0.06em;
+  margin-top:2px;
+  text-align:center;
+  display:block;
+}
+
+/* Pre-match: no score, just city */
+.t-upcoming {
+  font-size:clamp(9px,2.2vw,12px);
+  font-weight:600;
+  letter-spacing:0.1em;
+  color:rgba(255,255,255,0.22);
+  text-transform:uppercase;
+  margin-top:4px;
+}
+
+/* ── CENTRE BLOCK ── */
+.centre-block {
+  flex-shrink:0;
+  width:clamp(70px,19vw,120px);
   display:flex; flex-direction:column;
-  align-items:center; justify-content:center; gap:6px;
+  align-items:center; justify-content:center;
+  gap:clamp(4px,1.2vw,8px);
+  padding-top:clamp(20px,6vw,36px);
 }
-.vs-board {
-  font-family:'Poppins', sans-serif;
-  font-size:clamp(10px,3.5vw,18px); font-weight:900;
-  color:rgba(255,255,255,0.07); letter-spacing:0.1em;
+.c-vs {
+  font-size:clamp(9px,2.8vw,15px);
+  font-weight:900;
+  color:rgba(255,255,255,0.08);
+  letter-spacing:0.1em;
 }
-
-/* CRR/RRR boxes */
-.rate-block { display:flex; flex-direction:column; gap:4px; width:100%; }
-.rate-cell {
-  background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08);
-  border-radius:6px; padding:3px 6px;
-  display:flex; flex-direction:column; align-items:center;
+.c-date {
+  font-size:clamp(8px,2.2vw,13px);
+  font-weight:600;
+  color:rgba(255,255,255,0.4);
+  text-align:center;
+  line-height:1.4;
+  letter-spacing:0.04em;
 }
-.rate-cell-label {
-  font-family:'Poppins', sans-serif;
+.c-result {
+  font-size:clamp(9px,2.4vw,13px);
+  font-weight:700;
+  color:rgba(255,255,255,0.55);
+  text-align:center;
+  line-height:1.4;
+  margin-top:2px;
+}
+/* CRR/RRR live */
+.c-rates {
+  display:flex; flex-direction:column; gap:4px; width:100%;
+}
+.c-rate-item {
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:6px; padding:3px 6px; text-align:center;
+}
+.c-rate-lbl {
   font-size:clamp(6px,1.4vw,8px); font-weight:600;
   color:rgba(255,255,255,0.28); letter-spacing:0.14em; text-transform:uppercase;
 }
-.rate-cell-val {
+.c-rate-num {
   font-family:'Orbitron', monospace;
-  font-size:clamp(11px,3.5vw,17px); font-weight:700; line-height:1.1;
+  font-size:clamp(11px,3.2vw,16px); font-weight:700; line-height:1.1;
 }
-.rate-cell-val.crr { color:#4ade80; text-shadow:0 0 8px rgba(74,222,128,0.5); }
-.rate-cell-val.rrr { color:#f87171; text-shadow:0 0 8px rgba(248,113,113,0.5); }
-
-/* Target pill */
-.target-pill {
+.c-rate-num.crr { color:#4ade80; text-shadow:0 0 6px rgba(74,222,128,0.4); }
+.c-rate-num.rrr { color:#f87171; text-shadow:0 0 6px rgba(248,113,113,0.4); }
+.c-target {
   background:rgba(37,99,235,0.15); border:1px solid rgba(37,99,235,0.3);
   border-radius:6px; padding:3px 8px; text-align:center; width:100%;
 }
-.target-pill-label {
-  font-family:'Poppins', sans-serif;
+.c-target-lbl {
   font-size:clamp(6px,1.4vw,8px); font-weight:600;
   color:rgba(255,255,255,0.28); letter-spacing:0.14em; text-transform:uppercase;
 }
-.target-pill-val {
+.c-target-num {
   font-family:'Orbitron', monospace;
-  font-size:clamp(13px,4vw,20px); font-weight:900;
-  color:#f5c842; text-shadow:0 0 10px rgba(245,200,66,0.55); line-height:1.1;
+  font-size:clamp(13px,3.8vw,20px); font-weight:900;
+  color:#f5c842; text-shadow:0 0 8px rgba(245,200,66,0.4); line-height:1.1;
 }
 
-/* Match time (pre-match) */
-.match-time-board { text-align:center; }
-.mt-label {
-  font-family:'Poppins', sans-serif;
-  font-size:clamp(6px,1.5vw,8px); font-weight:600;
-  color:rgba(255,255,255,0.28); letter-spacing:0.14em; text-transform:uppercase;
-}
-.mt-val {
-  font-family:'Orbitron', monospace;
-  font-size:clamp(11px,3.5vw,16px); font-weight:700; color:#fff; line-height:1.2;
-}
-.mv-val {
-  font-family:'Poppins', sans-serif;
-  font-size:clamp(7px,1.8vw,9px); font-weight:500;
-  color:rgba(255,255,255,0.28); letter-spacing:0.06em; margin-top:2px;
-}
-
-/* Result text */
-.result-board {
-  font-family:'Poppins', sans-serif;
-  font-size:clamp(7px,2vw,10px); font-weight:600;
-  color:rgba(255,255,255,0.4); text-align:center; line-height:1.5;
-}
-
-/* ── LAST MATCH STRIP ── */
-.last-match-strip {
-  background:rgba(255,255,255,0.03);
+/* ── NEXT UP STRIP (matches your screenshot style) ── */
+.next-up-strip {
+  margin-top:clamp(8px,2.5vw,16px);
+  padding-top:clamp(6px,2vw,12px);
   border-top:1px solid rgba(255,255,255,0.07);
-  padding:7px 12px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  overflow:hidden;
+  flex-wrap:wrap;
 }
-.lm-top {
-  display:flex; align-items:center; justify-content:space-between; margin-bottom:5px;
+.nu-label {
+  font-size:clamp(7px,1.8vw,10px);
+  font-weight:800;
+  letter-spacing:0.2em;
+  color:rgba(255,200,50,0.55);
+  text-transform:uppercase;
+  white-space:nowrap;
+  flex-shrink:0;
 }
-.lm-tag {
-  font-family:'Poppins', sans-serif;
-  font-size:clamp(6px,1.6vw,8px); font-weight:700;
-  color:rgba(255,255,255,0.28); letter-spacing:0.18em; text-transform:uppercase;
+.nu-divider {
+  color:rgba(255,255,255,0.15);
+  font-weight:300;
+  flex-shrink:0;
 }
-.lm-result-pill {
-  background:rgba(37,99,235,0.15); border:1px solid rgba(37,99,235,0.3);
-  border-radius:4px; padding:2px 9px;
-  font-family:'Poppins', sans-serif;
-  font-size:clamp(6px,1.6vw,8px); font-weight:700;
-  color:#93c5fd; letter-spacing:0.04em;
-  max-width:58%; text-overflow:ellipsis; overflow:hidden; white-space:nowrap;
+.nu-matches {
+  display:flex; gap:clamp(8px,3vw,20px); overflow:hidden;
 }
-.lm-scores-row {
-  display:flex; align-items:center; justify-content:space-between; gap:6px;
+.nu-item {
+  display:flex; align-items:center; gap:5px;
+  font-size:clamp(9px,2.5vw,13px);
+  white-space:nowrap; flex-shrink:0;
 }
-.lm-team-block { flex:1; display:flex; flex-direction:column; align-items:center; gap:1px; }
-.lm-city-name {
-  font-family:'Poppins', sans-serif;
-  font-size:clamp(8px,2.5vw,12px); font-weight:700;
-  color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:0.04em;
+.nu-match-num {
+  font-weight:600; color:rgba(255,255,255,0.3);
 }
-.lm-score-num {
-  font-family:'Orbitron', monospace;
-  font-size:clamp(14px,4.5vw,22px); font-weight:900;
-  color:#f5c842; line-height:1;
-  text-shadow:0 0 10px rgba(245,200,66,0.4);
+.nu-teams {
+  font-weight:700; color:rgba(255,255,255,0.75);
 }
-.lm-ov {
-  font-family:'Poppins', sans-serif;
-  font-size:clamp(6px,1.6vw,8px); font-weight:500; color:rgba(255,255,255,0.25);
+.nu-teams .sep {
+  font-weight:400; color:rgba(255,255,255,0.2); margin:0 3px;
 }
-.lm-vs-mid {
-  font-family:'Poppins', sans-serif;
-  font-size:clamp(8px,2.5vw,12px); font-weight:900;
-  color:rgba(255,255,255,0.08); letter-spacing:0.06em;
-}
-.lm-venue-row {
-  font-family:'Poppins', sans-serif;
-  font-size:clamp(6px,1.4vw,8px); font-weight:500;
-  color:rgba(255,255,255,0.2); text-align:center;
-  letter-spacing:0.08em; text-transform:uppercase; margin-top:3px;
+.nu-date {
+  font-weight:500; color:rgba(255,255,255,0.35);
 }
 
-/* ── BOTTOM SCHEDULE STRIP ── */
-.schedule-strip {
-  background:rgba(0,0,0,0.2);
-  border-top:1px solid rgba(255,255,255,0.07);
-  display:flex; align-items:center;
-  padding:6px 12px; gap:0; overflow:hidden;
-}
-.sched-label {
-  font-family:'Poppins', sans-serif;
-  font-size:clamp(6px,1.6vw,8px); font-weight:800;
-  color:rgba(255,200,50,0.5); letter-spacing:0.2em; text-transform:uppercase;
-  flex-shrink:0; margin-right:10px;
-}
-.sched-list {
-  display:flex; flex:1; gap:0; align-items:center; overflow:hidden;
-}
-.sched-item {
-  flex:1; display:flex; flex-direction:column; gap:1px;
-  padding:0 10px; min-width:0;
-}
-.sched-item + .sched-item { border-left:1px solid rgba(255,255,255,0.07); }
-.sched-date {
-  font-family:'Poppins', sans-serif;
-  font-size:clamp(6px,1.5vw,8px); font-weight:700;
-  color:rgba(255,255,255,0.25); letter-spacing:0.12em; text-transform:uppercase;
-}
-.sched-teams {
-  font-family:'Poppins', sans-serif;
-  font-size:clamp(9px,2.8vw,13px); font-weight:700;
-  color:rgba(255,255,255,0.72); white-space:nowrap;
-  overflow:hidden; text-overflow:ellipsis;
-}
-.sched-teams .sep {
-  font-weight:400; color:rgba(255,255,255,0.2); margin:0 3px; font-size:0.85em;
-}
-.sched-venue {
-  font-family:'Poppins', sans-serif;
-  font-size:clamp(6px,1.4vw,7px); font-weight:500;
-  color:rgba(255,255,255,0.2); white-space:nowrap;
-}
-
-/* ── PRE-MATCH: clean team names + time, no empty score boxes ── */
-.prematch-area {
-  display:flex; align-items:center;
-  padding:14px 12px 12px; gap:8px;
-}
-.pm-home, .pm-away {
-  flex:1; display:flex; flex-direction:column; align-items:center; gap:3px;
-}
-.pm-tag {
-  font-size:clamp(7px,1.8vw,9px); font-weight:600;
-  letter-spacing:0.14em; color:rgba(255,255,255,0.28); text-transform:uppercase;
-}
-.pm-city {
-  font-size:clamp(18px,6.5vw,36px); font-weight:900;
-  letter-spacing:-0.02em; text-transform:uppercase; line-height:1;
-}
-.pm-home .pm-city { color:#a3e635; }
-.pm-away .pm-city { color:#60a5fa; }
-.pm-sub {
-  font-size:clamp(7px,1.8vw,9px); font-weight:500;
-  letter-spacing:0.12em; color:rgba(255,255,255,0.25); text-transform:uppercase;
-}
-.pm-centre {
-  flex-shrink:0; width:clamp(72px,18vw,108px);
-  display:flex; flex-direction:column; align-items:center; gap:4px;
-}
-.pm-vs {
-  font-size:clamp(9px,3vw,15px); font-weight:900; color:rgba(255,255,255,0.07);
-}
-.pm-time {
-  font-family:'Orbitron', monospace;
-  font-size:clamp(13px,4.2vw,22px); font-weight:700; color:#fff; line-height:1;
-}
-.pm-venue {
-  font-size:clamp(7px,1.8vw,9px); font-weight:500;
-  color:rgba(255,255,255,0.3); text-align:center; line-height:1.4;
-}
 </style>
 </head>
 <body>
 
 <div class="board">
 
-  <!-- Header -->
+  <!-- Header: title left, match info right -->
   <div class="header">
     <div class="header-league">Indian Premier League 2026</div>
-    <div class="header-badge" id="headerBadge">
-      <div class="header-match" id="headerMatch">Match 5 · Apr 1</div>
-    </div>
+    <div class="header-badge" id="headerBadge"></div>
   </div>
 
-  <!-- Main score area (live/complete only) -->
-  <div class="score-area" id="scoreArea" style="display:none">
+  <!-- Single unified content area -->
+  <div class="content-area">
 
-    <!-- Home team -->
-    <div class="team-panel home">
-      <div class="team-label-row">
-        <div class="batting-indicator" id="homeBatIndicator"></div>
-        <div class="team-tag">Home</div>
+    <!-- Status label: LAST MATCH / LIVE / FINISHED -->
+    <div class="status-label" id="statusLabel">Last Match</div>
+
+    <!-- Score row: always visible, content changes per state -->
+    <div class="score-row">
+
+      <div class="team-block home">
+        <div class="t-city" id="homeCity">Delhi</div>
+        <div id="homeScoreWrap">
+          <!-- filled by JS -->
+        </div>
       </div>
-      <div class="team-city" id="homeCityName">Kolkata</div>
-      <div id="homeScoreBlock"></div>
-    </div>
 
-    <!-- Centre -->
-    <div class="centre-col">
-      <div class="vs-board">VS</div>
-      <div id="centreContent"></div>
-    </div>
-
-    <!-- Away team -->
-    <div class="team-panel away">
-      <div class="team-label-row">
-        <div class="team-tag">Away</div>
-        <div class="batting-indicator" id="awayBatIndicator"></div>
+      <div class="centre-block">
+        <div class="c-vs">VS</div>
+        <div id="centreInfo">
+          <!-- filled by JS -->
+        </div>
       </div>
-      <div class="team-city" id="awayCityName">Hyderabad</div>
-      <div id="awayScoreBlock"></div>
-    </div>
 
-  </div>
-
-  <!-- Pre-match: team names + time only (no score boxes) -->
-  <div class="prematch-area" id="prematchArea">
-    <div class="pm-home">
-      <div class="pm-tag">Home</div>
-      <div class="pm-city" id="pmHomeCityName">Kolkata</div>
-      <div class="pm-sub" id="pmHomeSubName">Knight Riders</div>
-    </div>
-    <div class="pm-centre">
-      <div class="pm-vs">VS</div>
-      <div class="pm-time" id="pmTime">7:30 PM</div>
-      <div class="pm-venue" id="pmVenue">Apr 2 · Kolkata</div>
-    </div>
-    <div class="pm-away">
-      <div class="pm-tag">Away</div>
-      <div class="pm-city" id="pmAwayCityName">Hyderabad</div>
-      <div class="pm-sub" id="pmAwaySubName">Sunrisers</div>
-    </div>
-  </div>
-
-  <!-- Last match strip (pre-match only) -->
-  <div class="last-match-strip" id="lastMatchStrip">
-    <div class="lm-top">
-      <div class="lm-tag">Last Match</div>
-      <div class="lm-result-pill" id="lmResult">—</div>
-    </div>
-    <div class="lm-scores-row">
-      <div class="lm-team-block">
-        <div class="lm-city-name" id="lmHomeCity">—</div>
-        <div class="lm-score-num" id="lmHomeScore">—</div>
-        <div class="lm-ov" id="lmHomeOv"></div>
+      <div class="team-block away">
+        <div class="t-city" id="awayCity">Lucknow</div>
+        <div id="awayScoreWrap">
+          <!-- filled by JS -->
+        </div>
       </div>
-      <div class="lm-vs-mid">VS</div>
-      <div class="lm-team-block">
-        <div class="lm-city-name" id="lmAwayCity">—</div>
-        <div class="lm-score-num" id="lmAwayScore">—</div>
-        <div class="lm-ov" id="lmAwayOv"></div>
-      </div>
-    </div>
-    <div class="lm-venue-row" id="lmVenue"></div>
-  </div>
 
-  <!-- Schedule strip -->
-  <div class="schedule-strip">
-    <div class="sched-label">Next Up</div>
-    <div class="sched-list" id="schedList"></div>
+    </div>
+
+    <!-- Next up strip -->
+    <div class="next-up-strip" id="nextUpStrip"></div>
+
   </div>
 
 </div>
@@ -633,24 +438,16 @@ function matchHasStarted(m) {
   return now >= matchStart;
 }
 
-function scoreBlockHTML(t) {
+function scoreHTML(t) {
+  // Returns score number HTML — digital font for numbers only
   if (t.runs === null) return '';
-  const wktVal = t.allOut ? '10' : String(t.wickets);
-  const ovVal  = t.overs != null ? String(t.overs) : '—';
+  const wkt = t.allOut ? '/10' : `/${t.wickets}`;
+  const ov  = t.overs != null ? `${t.overs} Ov` : '';
   return `
-    <div class="score-box">
-      <div class="runs-display">${t.runs}</div>
-      <div class="wickets-overs">
-        <div class="wkt-box">
-          <span class="wkt-label">Wkts</span>
-          <span class="wkt-val">${wktVal}</span>
-        </div>
-        <div class="ov-box">
-          <span class="ov-label">Overs</span>
-          <span class="ov-val">${ovVal}</span>
-        </div>
-      </div>
-    </div>`;
+    <div>
+      <span class="t-score">${t.runs}</span><span class="t-wkt">${wkt}</span>
+    </div>
+    ${ov ? `<div class="t-overs">${ov}</div>` : ''}`;
 }
 
 function render() {
@@ -659,104 +456,106 @@ function render() {
   const H   = TEAMS[m.home] || { city:m.home, sub:'', short:m.home };
   const A   = TEAMS[m.away] || { city:m.away, sub:'', short:m.away };
 
-  // Header match label
-  $('headerMatch').textContent = `Match ${m.matchNo} · ${m.date}`;
+  const isPreMatch = state.status === 'upcoming' && !matchHasStarted(m);
 
-  // Header badge
+  // Header badge — match info right side
   const hb = $('headerBadge');
   if (state.status === 'live') {
     hb.innerHTML = `<div class="live-dot"></div><span class="live-label">Live</span>`;
-  } else if (state.status === 'complete') {
-    hb.innerHTML = `<span class="header-match">Finished</span>`;
   } else {
     hb.innerHTML = `<span class="header-match">Match ${m.matchNo} · ${m.date}</span>`;
   }
 
-  const isPreMatch = state.status === 'upcoming' && !matchHasStarted(m);
-  const scoreArea   = $('scoreArea');
-  const prematchArea = $('prematchArea');
-  const lastMatchStrip = $('lastMatchStrip');
+  // ── STATUS LABEL ──
+  const sl = $('statusLabel');
+  if (state.status === 'live') {
+    sl.className = 'status-label is-live';
+    sl.innerHTML = `<div class="live-dot"></div> Live`;
+  } else if (state.status === 'complete') {
+    sl.className = 'status-label';
+    sl.textContent = 'Finished';
+  } else if (isPreMatch) {
+    sl.className = 'status-label';
+    sl.textContent = 'Last Match';
+  } else {
+    sl.className = 'status-label';
+    sl.textContent = `Starting ${m.time}`;
+  }
 
+  // ── TEAM CITIES ──
+  // Pre-match: show today's upcoming teams
+  // Last-match / live: show relevant teams
   if (isPreMatch) {
-    // ── PRE-MATCH: show team names + last match, hide score boxes ──
-    scoreArea.style.display    = 'none';
-    prematchArea.style.display = 'flex';
-
-    $('pmHomeCityName').textContent = H.city;
-    $('pmHomeSubName').textContent  = H.sub;
-    $('pmAwayCityName').textContent = A.city;
-    $('pmAwaySubName').textContent  = A.sub;
-    $('pmTime').textContent  = m.time;
-    $('pmVenue').textContent = `${m.date} · ${m.venue}`;
-
-    // Last match card
+    // Show last match teams in score row, today's teams implied by header
     const lr = LAST_RESULTS[idx];
     if (lr) {
-      lastMatchStrip.style.display = 'block';
-      $('lmResult').textContent    = lr.result;
-      $('lmHomeCity').textContent  = lr.homeCity;
-      $('lmAwayCity').textContent  = lr.awayCity;
-      $('lmHomeScore').textContent = lr.homeScore;
-      $('lmAwayScore').textContent = lr.awayScore;
-      $('lmHomeOv').textContent    = lr.homeOv || '';
-      $('lmAwayOv').textContent    = lr.awayOv || '';
-      $('lmVenue').textContent     = lr.venue || '';
+      $('homeCity').textContent = lr.homeCity;
+      $('awayCity').textContent = lr.awayCity;
+      // Scores from last match
+      $('homeScoreWrap').innerHTML = `
+        <div><span class="t-score">${lr.homeScore}</span></div>
+        ${lr.homeOv ? `<div class="t-overs">${lr.homeOv}</div>` : ''}`;
+      $('awayScoreWrap').innerHTML = `
+        <div><span class="t-score">${lr.awayScore}</span></div>
+        ${lr.awayOv ? `<div class="t-overs">${lr.awayOv}</div>` : ''}`;
+      // Centre: VS + date/time + result
+      $('centreInfo').innerHTML = `
+        <div class="c-date">${lr.venue}</div>
+        <div class="c-result">${lr.result}</div>`;
     } else {
-      lastMatchStrip.style.display = 'none';
+      // No last result — show upcoming match teams
+      $('homeCity').textContent = H.city;
+      $('awayCity').textContent = A.city;
+      $('homeScoreWrap').innerHTML = `<div class="t-upcoming">${m.time}</div>`;
+      $('awayScoreWrap').innerHTML = `<div class="t-upcoming">${m.venue}</div>`;
+      $('centreInfo').innerHTML = `<div class="c-date">${m.date}</div>`;
     }
-
   } else {
-    // ── LIVE / COMPLETE / POST-START: show score boxes, hide pre-match ──
-    scoreArea.style.display    = 'flex';
-    prematchArea.style.display = 'none';
-    lastMatchStrip.style.display = 'none';
+    // Live or complete — show today's match scores
+    $('homeCity').textContent = H.city;
+    $('awayCity').textContent = A.city;
+    $('homeScoreWrap').innerHTML = state.home.runs !== null
+      ? scoreHTML(state.home)
+      : `<div class="t-upcoming">Yet to bat</div>`;
+    $('awayScoreWrap').innerHTML = state.away.runs !== null
+      ? scoreHTML(state.away)
+      : `<div class="t-upcoming">Yet to bat</div>`;
 
-    $('homeCityName').textContent = H.city;
-    $('awayCityName').textContent = A.city;
-
-    // Batting indicators
-    const hBat = state.home.runs !== null && !state.home.allOut && state.away.runs === null;
-    const aBat = state.away.runs !== null && !state.away.allOut;
-    $('homeBatIndicator').className = 'batting-indicator' + (hBat ? ' show' : '');
-    $('awayBatIndicator').className = 'batting-indicator' + (aBat ? ' show' : '');
-
-    // Score blocks — show yet-to-bat box if no runs yet (1st innings only)
-    $('homeScoreBlock').innerHTML = state.home.runs !== null
-      ? scoreBlockHTML(state.home)
-      : `<div class="yet-box"><div class="yet-dashes">---</div><div class="yet-label">Yet to bat</div></div>`;
-    $('awayScoreBlock').innerHTML = state.away.runs !== null
-      ? scoreBlockHTML(state.away)
-      : `<div class="yet-box"><div class="yet-dashes">---</div><div class="yet-label">Yet to bat</div></div>`;
-
-    // Centre
-    const cc = $('centreContent');
+    // Centre info
     if (state.status === 'live') {
       const c = state.crr ? state.crr.toFixed(2) : '—';
       const r = state.rrr ? state.rrr.toFixed(2) : '—';
-      let html = `<div class="rate-block">`;
-      if (state.target) html += `<div class="target-pill"><div class="target-pill-label">Target</div><div class="target-pill-val">${state.target}</div></div>`;
-      html += `<div class="rate-cell"><span class="rate-cell-label">CRR</span><span class="rate-cell-val crr">${c}</span></div>
-               <div class="rate-cell"><span class="rate-cell-label">RRR</span><span class="rate-cell-val rrr">${r}</span></div></div>`;
-      cc.innerHTML = html;
+      let ci = '';
+      if (state.target) ci += `<div class="c-target"><div class="c-target-lbl">Target</div><div class="c-target-num">${state.target}</div></div>`;
+      ci += `<div class="c-rates">
+        <div class="c-rate-item"><div class="c-rate-lbl">CRR</div><div class="c-rate-num crr">${c}</div></div>
+        <div class="c-rate-item"><div class="c-rate-lbl">RRR</div><div class="c-rate-num rrr">${r}</div></div>
+      </div>`;
+      $('centreInfo').innerHTML = ci;
     } else if (state.status === 'complete' && state.result) {
-      cc.innerHTML = `<div class="result-board">${state.result}</div>`;
+      $('centreInfo').innerHTML = `<div class="c-result">${state.result}</div>`;
     } else {
-      // Match started but fetch hasn't confirmed live yet — show VS + time
-      cc.innerHTML = `<div class="match-time-board"><div class="mt-label">Started</div><div class="mt-val">${m.time}</div></div>`;
+      $('centreInfo').innerHTML = `<div class="c-date">${m.date}<br>${m.venue}</div>`;
     }
   }
 
-  // Schedule strip — always show
+  // ── NEXT UP STRIP ── (always visible, shows upcoming matches)
   const next = SCHEDULE.slice(idx + 1, idx + 3);
-  $('schedList').innerHTML = next.map(nm => {
-    const h = TEAMS[nm.home] || { short:nm.home };
-    const a = TEAMS[nm.away] || { short:nm.away };
-    return `<div class="sched-item">
-      <div class="sched-date">${nm.date}</div>
-      <div class="sched-teams">${h.short}<span class="sep">vs</span>${a.short}</div>
-      <div class="sched-venue">${nm.venue} · ${nm.time}</div>
+  $('nextUpStrip').innerHTML = `
+    <span class="nu-label">Next Up</span>
+    <span class="nu-divider">|</span>
+    <div class="nu-matches">
+      ${next.map(nm => {
+        const h = TEAMS[nm.home] || { short:nm.home };
+        const a = TEAMS[nm.away] || { short:nm.away };
+        return `<div class="nu-item">
+          <span class="nu-match-num">Match ${nm.matchNo}</span>
+          <span class="nu-divider">·</span>
+          <span class="nu-date">${nm.date}–</span>
+          <span class="nu-teams">${h.short}<span class="sep">vs</span>${a.short}</span>
+        </div>`;
+      }).join('<span class="nu-divider" style="color:rgba(255,255,255,0.1)">|</span>')}
     </div>`;
-  }).join('');
 }
 
 // ── Live fetch ──
