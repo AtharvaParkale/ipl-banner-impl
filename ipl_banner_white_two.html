@@ -116,7 +116,7 @@ html, body {
 .team-block.away .t-city { color:#60a5fa; }
 
 .t-score {
-  font-family:'Orbitron', monospace;
+  font-family:'Poppins', sans-serif;
   font-size:clamp(28px,10vw,60px);
   font-weight:900;
   letter-spacing:-0.03em;
@@ -124,11 +124,11 @@ html, body {
   font-variant-numeric:tabular-nums;
   text-align:center;
 }
-.team-block.home .t-score { color:#c8e84a; text-shadow:0 0 20px rgba(200,232,74,0.4); }
-.team-block.away .t-score { color:#7cc8ff; text-shadow:0 0 20px rgba(124,200,255,0.4); }
+.team-block.home .t-score { color:#c8e84a; }
+.team-block.away .t-score { color:#7cc8ff; }
 
 .t-wkt {
-  font-family:'Orbitron', monospace;
+  font-family:'Poppins', sans-serif;
   font-size:clamp(16px,5.5vw,32px);
   font-weight:700;
   color:rgba(255,255,255,0.35);
@@ -221,14 +221,10 @@ html, body {
 /* ── NEXT UP STRIP (matches your screenshot style) ── */
 .next-up-strip {
   margin-top:clamp(8px,2.5vw,16px);
-  padding-top:clamp(6px,2vw,12px);
-  border-top:1px solid rgba(255,255,255,0.07);
   display:flex;
+  flex-direction:column;
   align-items:center;
-  justify-content:center;
-  gap:8px;
-  overflow:hidden;
-  flex-wrap:wrap;
+  gap:5px;
 }
 .nu-label {
   font-size:clamp(7px,1.8vw,10px);
@@ -237,20 +233,27 @@ html, body {
   color:rgba(255,200,50,0.55);
   text-transform:uppercase;
   white-space:nowrap;
-  flex-shrink:0;
 }
 .nu-divider {
   color:rgba(255,255,255,0.15);
   font-weight:300;
-  flex-shrink:0;
+  margin:0 6px;
 }
 .nu-matches {
-  display:flex; gap:clamp(8px,3vw,20px); overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+  width:100%;
 }
 .nu-item {
-  display:flex; align-items:center; gap:5px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:4px;
   font-size:clamp(9px,2.5vw,13px);
-  white-space:nowrap; flex-shrink:0;
+  flex-wrap:wrap;
+  text-align:center;
 }
 .nu-match-num {
   font-weight:600; color:rgba(255,255,255,0.3);
@@ -539,23 +542,7 @@ function render() {
     }
   }
 
-  // ── NEXT UP STRIP ── (always visible, shows upcoming matches)
-  const next = SCHEDULE.slice(idx + 1, idx + 3);
-  $('nextUpStrip').innerHTML = `
-    <span class="nu-label">Next Up</span>
-    <span class="nu-divider">|</span>
-    <div class="nu-matches">
-      ${next.map(nm => {
-        const h = TEAMS[nm.home] || { short:nm.home };
-        const a = TEAMS[nm.away] || { short:nm.away };
-        return `<div class="nu-item">
-          <span class="nu-match-num">Match ${nm.matchNo}</span>
-          <span class="nu-divider">·</span>
-          <span class="nu-date">${nm.date}–</span>
-          <span class="nu-teams">${h.short}<span class="sep">vs</span>${a.short}</span>
-        </div>`;
-      }).join('<span class="nu-divider" style="color:rgba(255,255,255,0.1)">|</span>')}
-    </div>`;
+  $('nextUpStrip').innerHTML = '';
 }
 
 // ── Live fetch ──
