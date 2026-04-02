@@ -71,7 +71,7 @@ html, body {
 
 /* ── MAIN CONTENT AREA ── */
 .content-area {
-  padding: clamp(10px,3vw,20px) clamp(12px,4vw,24px) clamp(8px,2.5vw,16px);
+  padding: clamp(10px,3vw,20px) clamp(12px,4vw,24px) clamp(12px,3vw,20px);
 }
 
 /* ── STATUS LABEL (LAST MATCH / LIVE) ── */
@@ -124,14 +124,25 @@ html, body {
   font-variant-numeric:tabular-nums;
   text-align:center;
 }
-.team-block.home .t-score { color:#c8e84a; }
-.team-block.away .t-score { color:#7cc8ff; }
+.team-block.home .t-score { color: var(--team-color, #c8e84a); }
+.team-block.away .t-score { color: var(--team-color, #7cc8ff); }
 
+.t-slash {
+  font-family:'Poppins', sans-serif;
+  font-size:clamp(11px,2.5vw,16px) !important;
+  font-weight:300;
+  color:rgba(255,255,255,0.2);
+  vertical-align:middle;
+  margin:0 1px;
+  line-height:1;
+}
 .t-wkt {
   font-family:'Poppins', sans-serif;
-  font-size:clamp(16px,5.5vw,32px);
-  font-weight:700;
+  font-size:clamp(11px,2.5vw,16px) !important;
+  font-weight:600;
   color:rgba(255,255,255,0.35);
+  vertical-align:middle;
+  line-height:1;
 }
 
 .t-overs {
@@ -220,7 +231,6 @@ html, body {
 
 /* ── NEXT UP STRIP (matches your screenshot style) ── */
 .next-up-strip {
-  margin-top:clamp(8px,2.5vw,16px);
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -320,34 +330,34 @@ html, body {
 </div>
 
 <script>
+// ── TEAM DATA ──
 const TEAMS = {
-  LSG:  { city:'Lucknow',   sub:'Super Giants',     short:'Lucknow'   },
-  DC:   { city:'Delhi',     sub:'Capitals',          short:'Delhi'     },
-  MI:   { city:'Mumbai',    sub:'Indians',           short:'Mumbai'    },
-  CSK:  { city:'Chennai',   sub:'Super Kings',       short:'Chennai'   },
-  RCB:  { city:'Bangalore', sub:'Royal Challengers', short:'Bangalore' },
-  KKR:  { city:'Kolkata',   sub:'Knight Riders',     short:'Kolkata'   },
-  SRH:  { city:'Hyderabad', sub:'Sunrisers',         short:'Hyderabad' },
-  RR:   { city:'Rajasthan', sub:'Royals',            short:'Rajasthan' },
-  PBKS: { city:'Punjab',    sub:'Kings',             short:'Punjab'    },
-  GT:   { city:'Gujarat',   sub:'Titans',            short:'Gujarat'   },
+  LSG:  { city:'Lucknow',   sub:'Super Giants',     short:'Lucknow',   color:'#A72B6D' },
+  DC:   { city:'Delhi',     sub:'Capitals',          short:'Delhi',     color:'#2561AE' },
+  MI:   { city:'Mumbai',    sub:'Indians',           short:'Mumbai',    color:'004BA0'  },
+  CSK:  { city:'Chennai',   sub:'Super Kings',       short:'Chennai',   color:'#F5C002' },
+  RCB:  { city:'Bangalore', sub:'Royal Challengers', short:'Bangalore', color:'#D1232A' },
+  KKR:  { city:'Kolkata',   sub:'Knight Riders',     short:'Kolkata',   color:'#3B2177' },
+  SRH:  { city:'Hyderabad', sub:'Sunrisers',         short:'Hyderabad', color:'#F26522' },
+  RR:   { city:'Rajasthan', sub:'Royals',            short:'Rajasthan', color:'#EA1A85' },
+  PBKS: { city:'Punjab',    sub:'Kings',             short:'Punjab',    color:'#D71920' },
+  GT:   { city:'Gujarat',   sub:'Titans',            short:'Gujarat',   color:'#C5A028' },
 };
 
+// ── FULL SCHEDULE ──
 const SCHEDULE = [
-  // Phase 1 (confirmed results)
   { date:'Mar 28', matchNo:1,  home:'RCB',  away:'SRH',  time:'7:30 PM', venue:'Bangalore' },
   { date:'Mar 29', matchNo:2,  home:'KKR',  away:'MI',   time:'7:30 PM', venue:'Kolkata'   },
   { date:'Mar 30', matchNo:3,  home:'CSK',  away:'RR',   time:'7:30 PM', venue:'Chennai'   },
-  { date:'Apr 1',  matchNo:4,  home:'PBKS', away:'GT',   time:'7:30 PM', venue:'Mullanpur' },
+  { date:'Apr 1',  matchNo:4,  home:'PBKS', away:'GT',   time:'3:30 PM', venue:'Mullanpur' },
   { date:'Apr 1',  matchNo:5,  home:'LSG',  away:'DC',   time:'7:30 PM', venue:'Lucknow'   },
-  // Phase 2
   { date:'Apr 2',  matchNo:6,  home:'KKR',  away:'SRH',  time:'7:30 PM', venue:'Kolkata'   },
   { date:'Apr 3',  matchNo:7,  home:'CSK',  away:'PBKS', time:'7:30 PM', venue:'Chennai'   },
   { date:'Apr 4',  matchNo:8,  home:'DC',   away:'MI',   time:'3:30 PM', venue:'Delhi'     },
   { date:'Apr 4',  matchNo:9,  home:'GT',   away:'RR',   time:'7:30 PM', venue:'Ahmedabad' },
   { date:'Apr 5',  matchNo:10, home:'SRH',  away:'LSG',  time:'7:30 PM', venue:'Hyderabad' },
-  { date:'Apr 6',  matchNo:11, home:'RCB',  away:'CSK',  time:'7:30 PM', venue:'Bangalore' },
-  { date:'Apr 6',  matchNo:12, home:'KKR',  away:'PBKS', time:'3:30 PM', venue:'Kolkata'   },
+  { date:'Apr 6',  matchNo:11, home:'KKR',  away:'PBKS', time:'3:30 PM', venue:'Kolkata'   },
+  { date:'Apr 6',  matchNo:12, home:'RCB',  away:'CSK',  time:'7:30 PM', venue:'Bangalore' },
   { date:'Apr 7',  matchNo:13, home:'RR',   away:'MI',   time:'7:30 PM', venue:'Guwahati'  },
   { date:'Apr 8',  matchNo:14, home:'DC',   away:'GT',   time:'7:30 PM', venue:'Delhi'     },
   { date:'Apr 9',  matchNo:15, home:'KKR',  away:'LSG',  time:'7:30 PM', venue:'Kolkata'   },
@@ -358,8 +368,8 @@ const SCHEDULE = [
   { date:'Apr 13', matchNo:20, home:'LSG',  away:'RCB',  time:'7:30 PM', venue:'Lucknow'   },
   { date:'Apr 14', matchNo:21, home:'SRH',  away:'KKR',  time:'7:30 PM', venue:'Hyderabad' },
   { date:'Apr 15', matchNo:22, home:'MI',   away:'PBKS', time:'7:30 PM', venue:'Mumbai'    },
-  { date:'Apr 16', matchNo:23, home:'RCB',  away:'GT',   time:'7:30 PM', venue:'Bangalore' },
-  { date:'Apr 16', matchNo:24, home:'RR',   away:'DC',   time:'3:30 PM', venue:'Jaipur'    },
+  { date:'Apr 16', matchNo:23, home:'RR',   away:'DC',   time:'3:30 PM', venue:'Jaipur'    },
+  { date:'Apr 16', matchNo:24, home:'RCB',  away:'GT',   time:'7:30 PM', venue:'Bangalore' },
   { date:'Apr 17', matchNo:25, home:'CSK',  away:'LSG',  time:'7:30 PM', venue:'Chennai'   },
   { date:'Apr 18', matchNo:26, home:'KKR',  away:'GT',   time:'7:30 PM', venue:'Kolkata'   },
   { date:'Apr 19', matchNo:27, home:'PBKS', away:'RR',   time:'3:30 PM', venue:'Mullanpur' },
@@ -384,250 +394,310 @@ const SCHEDULE = [
   { date:'May 5',  matchNo:46, home:'RR',   away:'LSG',  time:'7:30 PM', venue:'Jaipur'    },
 ];
 
+// ── LAST MATCH RESULTS (keyed by SCHEDULE index of TODAY's match) ──
+// Populated as results come in. homeCity/awayCity must match TEAMS city name exactly.
 const LAST_RESULTS = {
-  // Index in SCHEDULE array → last match result to show before this match starts
-  5: { // Before KKR vs SRH (Match 6, Apr 2) — show LSG vs DC result
-    homeCity:'Delhi', awayCity:'Lucknow',
-    homeScore:'145/4', homeOv:'17.1 ov',
-    awayScore:'141/10', awayOv:'18.4 ov',
-    result:'Delhi won by 6 wkts',
-    venue:'Lucknow · Apr 1'
-  },
-  6: { // Before CSK vs PBKS (Match 7, Apr 3) — show KKR vs SRH result (TBD tonight)
-    homeCity:'Kolkata', awayCity:'Hyderabad',
-    homeScore:'—', homeOv:'',
-    awayScore:'—', awayOv:'',
-    result:'Apr 2 result pending',
-    venue:'Kolkata · Apr 2'
-  },
-  7: { // Before DC vs MI (Match 8, Apr 4)
-    homeCity:'Chennai', awayCity:'Punjab',
-    homeScore:'—', homeOv:'',
-    awayScore:'—', awayOv:'',
-    result:'Apr 3 result pending',
-    venue:'Chennai · Apr 3'
-  },
+  1:  { homeCity:'Bangalore', awayCity:'Hyderabad', homeScore:'203/4', homeOv:'15.4 ov', awayScore:'201/9', awayOv:'20 ov',  result:'RCB won by 6 wkts',    venue:'Bangalore · Mar 28' },
+  2:  { homeCity:'Kolkata',   awayCity:'Mumbai',    homeScore:'220/4', homeOv:'20 ov',   awayScore:'224/4', awayOv:'19.1 ov',result:'Mumbai won by 6 wkts',  venue:'Kolkata · Mar 29'   },
+  3:  { homeCity:'Chennai',   awayCity:'Rajasthan', homeScore:'168/6', homeOv:'20 ov',   awayScore:'155/8', awayOv:'20 ov',  result:'Chennai won by 13 runs', venue:'Chennai · Mar 30'   },
+  4:  { homeCity:'Punjab',    awayCity:'Gujarat',   homeScore:'165/7', homeOv:'19.1 ov', awayScore:'162/6', awayOv:'20 ov',  result:'Punjab won by 3 wkts',   venue:'Mullanpur · Apr 1'  },
+  5:  { homeCity:'Delhi',     awayCity:'Lucknow',   homeScore:'145/4', homeOv:'17.1 ov', awayScore:'141/10',awayOv:'18.4 ov',result:'Delhi won by 6 wkts',    venue:'Lucknow · Apr 1'    },
+  6:  { homeCity:'Delhi',     awayCity:'Lucknow',   homeScore:'145/4', homeOv:'17.1 ov', awayScore:'141/10',awayOv:'18.4 ov',result:'Delhi won by 6 wkts',    venue:'Lucknow · Apr 1'    },
+  // Add results here as season progresses — key = index of next match in SCHEDULE
 };
 
+// ── STATE ──
 let state = {
-  status:'upcoming', matchIdx:4,
-  home:{ runs:null, wickets:null, overs:null, allOut:false },
-  away:{ runs:null, wickets:null, overs:null, allOut:false },
-  crr:null, rrr:null, result:null, target:null,
+  status: 'upcoming', // 'upcoming' | 'live' | 'complete'
+  matchIdx: 5,
+  home: { runs:null, wickets:null, overs:null, allOut:false },
+  away: { runs:null, wickets:null, overs:null, allOut:false },
+  crr: null, rrr: null, result: null, target: null,
 };
 
 const $ = id => document.getElementById(id);
 
+// ── FIND TODAY'S ACTIVE MATCH ──
+// On double-header days: show 3:30 PM match until it's finished,
+// then switch to 7:30 PM match from 7:00 PM onwards
 function todayIdx() {
-  const now = new Date();
-  const key = `${now.toLocaleString('en-US',{month:'short'})} ${now.getDate()}`;
-  // Find last match on today's date (handles double-header days — show the evening match)
-  let last = -1;
-  for (let i = 0; i < SCHEDULE.length; i++) {
-    if (SCHEDULE[i].date === key) last = i;
+  const now  = new Date();
+  const mon  = now.toLocaleString('en-US', { month:'short' });
+  const day  = now.getDate();
+  const key  = `${mon} ${day}`;
+  const todayMatches = SCHEDULE
+    .map((m, i) => ({ ...m, idx: i }))
+    .filter(m => m.date === key);
+
+  if (todayMatches.length === 0) {
+    // No match today — find next upcoming match
+    const upcoming = SCHEDULE.findIndex(m => {
+      const [mo, da] = m.date.split(' ');
+      const d = new Date(`${mo} ${da} 2026`);
+      return d >= new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    });
+    return upcoming >= 0 ? upcoming : SCHEDULE.length - 1;
   }
-  return last >= 0 ? last : 5; // default to match 6 (KKR vs SRH, Apr 2)
+
+  if (todayMatches.length === 1) return todayMatches[0].idx;
+
+  // Double-header: pick the match currently active or next to start
+  const nowMins = now.getHours() * 60 + now.getMinutes();
+  for (const m of todayMatches) {
+    const [t, ap] = m.time.split(' ');
+    let [h, mi]   = t.split(':').map(Number);
+    if (ap === 'PM' && h !== 12) h += 12;
+    const startMins = h * 60 + mi;
+    // Show this match from 30 mins before until 3 hours after start
+    if (nowMins >= startMins - 30 && nowMins < startMins + 180) return m.idx;
+  }
+  // Default: last match of the day
+  return todayMatches[todayMatches.length - 1].idx;
 }
 
-// Check if match has started based on scheduled time
+// ── HAS MATCH STARTED? ──
 function matchHasStarted(m) {
-  const now  = new Date();
-  const [time, ampm] = m.time.split(' ');
-  let [h, min] = time.split(':').map(Number);
-  if (ampm === 'PM' && h !== 12) h += 12;
-  if (ampm === 'AM' && h === 12) h = 0;
-  const matchStart = new Date(now);
-  matchStart.setHours(h, min - 5, 0, 0); // 5 min grace before scheduled time
-  return now >= matchStart;
+  const now = new Date();
+  const [t, ap] = m.time.split(' ');
+  let [h, mi]   = t.split(':').map(Number);
+  if (ap === 'PM' && h !== 12) h += 12;
+  if (ap === 'AM' && h === 12) h = 0;
+  const start = new Date(now);
+  start.setHours(h, mi - 5, 0, 0); // 5 min early grace
+  return now >= start;
+}
+
+// ── SCORE DISPLAY HELPERS ──
+function splitScore(s) {
+  if (!s || s === '—') return `<span class="t-score" style="color:rgba(255,255,255,0.2)">—</span>`;
+  const parts = s.split('/');
+  if (parts.length === 2) {
+    return `<span class="t-score">${parts[0]}</span><span class="t-slash">/</span><span class="t-wkt">${parts[1]}</span>`;
+  }
+  return `<span class="t-score">${s}</span>`;
 }
 
 function scoreHTML(t) {
-  // Returns score number HTML — digital font for numbers only
-  if (t.runs === null) return '';
-  const wkt = t.allOut ? '/10' : `/${t.wickets}`;
-  const ov  = t.overs != null ? `${t.overs} Ov` : '';
+  if (t.runs === null) return `<div class="t-upcoming">Yet to bat</div>`;
+  const wkt = t.allOut ? '10' : String(t.wickets);
+  const ov  = t.overs  != null ? `${t.overs} ov` : '';
   return `
-    <div>
-      <span class="t-score">${t.runs}</span><span class="t-wkt">${wkt}</span>
+    <div style="display:inline-flex;align-items:center;justify-content:center;width:100%;gap:0;">
+      <span class="t-score">${t.runs}</span><span class="t-slash">/</span><span class="t-wkt">${wkt}</span>
     </div>
     ${ov ? `<div class="t-overs">${ov}</div>` : ''}`;
 }
 
+// ── APPLY TEAM COLOR ──
+function applyColor(cityEl, scoreWrapEl, color) {
+  cityEl.style.color = color;
+  const block = cityEl.closest('.team-block');
+  if (block) block.style.setProperty('--team-color', color);
+}
+
+function teamColor(code) {
+  return (TEAMS[code] && TEAMS[code].color) ? TEAMS[code].color : '#aaaaaa';
+}
+
+function colorByCity(cityName) {
+  const code = Object.keys(TEAMS).find(k =>
+    TEAMS[k].city === cityName || TEAMS[k].short === cityName
+  );
+  return code ? teamColor(code) : '#aaaaaa';
+}
+
+// ── RENDER ──
 function render() {
   const idx = state.matchIdx;
   const m   = SCHEDULE[idx];
-  const H   = TEAMS[m.home] || { city:m.home, sub:'', short:m.home };
-  const A   = TEAMS[m.away] || { city:m.away, sub:'', short:m.away };
+  const H   = TEAMS[m.home] || { city:m.home, color:'#aaaaaa' };
+  const A   = TEAMS[m.away] || { city:m.away, color:'#aaaaaa' };
 
   const isPreMatch = state.status === 'upcoming' && !matchHasStarted(m);
 
-  // Header badge — match info right side
-  const hb = $('headerBadge');
+  const homeCity = $('homeCity');
+  const awayCity = $('awayCity');
+  const hSW      = $('homeScoreWrap');
+  const aSW      = $('awayScoreWrap');
+  const ci       = $('centreInfo');
+  const sl       = $('statusLabel');
+  const hb       = $('headerBadge');
+
+  // Header right badge
   if (state.status === 'live') {
     hb.innerHTML = `<div class="live-dot"></div><span class="live-label">Live</span>`;
   } else {
     hb.innerHTML = `<span class="header-match">Match ${m.matchNo} · ${m.date}</span>`;
   }
 
-  // ── STATUS LABEL ──
-  const sl = $('statusLabel');
-  if (state.status === 'live') {
-    sl.className = 'status-label is-live';
-    sl.innerHTML = `<div class="live-dot"></div> Live`;
-  } else if (state.status === 'complete') {
-    sl.className = 'status-label';
-    sl.textContent = 'Finished';
-  } else if (isPreMatch) {
-    sl.className = 'status-label';
-    sl.textContent = 'Last Match';
-  } else {
-    sl.className = 'status-label';
-    sl.textContent = `Starting ${m.time}`;
-  }
-
-  // ── TEAM CITIES ──
-  // Pre-match: show today's upcoming teams
-  // Last-match / live: show relevant teams
+  // ── PRE-MATCH: show last match ──
   if (isPreMatch) {
-    // Show last match teams in score row, today's teams implied by header
+    sl.className   = 'status-label';
+    sl.textContent = 'Last Match';
+
     const lr = LAST_RESULTS[idx];
     if (lr) {
-      $('homeCity').textContent = lr.homeCity;
-      $('awayCity').textContent = lr.awayCity;
-      // Scores from last match
-      $('homeScoreWrap').innerHTML = `
-        <div><span class="t-score">${lr.homeScore}</span></div>
-        ${lr.homeOv ? `<div class="t-overs">${lr.homeOv}</div>` : ''}`;
-      $('awayScoreWrap').innerHTML = `
-        <div><span class="t-score">${lr.awayScore}</span></div>
-        ${lr.awayOv ? `<div class="t-overs">${lr.awayOv}</div>` : ''}`;
-      // Centre: VS + date/time + result
-      $('centreInfo').innerHTML = `
-        <div class="c-date">${lr.venue}</div>
-        <div class="c-result">${lr.result}</div>`;
+      homeCity.textContent = lr.homeCity;
+      awayCity.textContent = lr.awayCity;
+      applyColor(homeCity, hSW, colorByCity(lr.homeCity));
+      applyColor(awayCity, aSW, colorByCity(lr.awayCity));
+      hSW.innerHTML = `<div style="display:inline-flex;align-items:center;justify-content:center;width:100%;gap:0;">${splitScore(lr.homeScore)}</div>${lr.homeOv ? `<div class="t-overs">${lr.homeOv}</div>` : ''}`;
+      aSW.innerHTML = `<div style="display:inline-flex;align-items:center;justify-content:center;width:100%;gap:0;">${splitScore(lr.awayScore)}</div>${lr.awayOv ? `<div class="t-overs">${lr.awayOv}</div>` : ''}`;
+      ci.innerHTML  = `<div class="c-date">${lr.venue}</div><div class="c-result">${lr.result}</div>`;
     } else {
-      // No last result — show upcoming match teams
-      $('homeCity').textContent = H.city;
-      $('awayCity').textContent = A.city;
-      $('homeScoreWrap').innerHTML = `<div class="t-upcoming">${m.time}</div>`;
-      $('awayScoreWrap').innerHTML = `<div class="t-upcoming">${m.venue}</div>`;
-      $('centreInfo').innerHTML = `<div class="c-date">${m.date}</div>`;
+      // No result yet — show upcoming teams + time
+      homeCity.textContent = H.city;
+      awayCity.textContent = A.city;
+      applyColor(homeCity, hSW, teamColor(m.home));
+      applyColor(awayCity, aSW, teamColor(m.away));
+      hSW.innerHTML = '';
+      aSW.innerHTML = '';
+      ci.innerHTML  = `<div class="c-date">${m.time} IST<br>${m.date} · ${m.venue}</div>`;
     }
-  } else {
-    // Live or complete — show today's match scores
-    $('homeCity').textContent = H.city;
-    $('awayCity').textContent = A.city;
-    $('homeScoreWrap').innerHTML = state.home.runs !== null
-      ? scoreHTML(state.home)
-      : `<div class="t-upcoming">Yet to bat</div>`;
-    $('awayScoreWrap').innerHTML = state.away.runs !== null
-      ? scoreHTML(state.away)
-      : `<div class="t-upcoming">Yet to bat</div>`;
+    return;
+  }
 
-    // Centre info
-    if (state.status === 'live') {
-      const c = state.crr ? state.crr.toFixed(2) : '—';
-      const r = state.rrr ? state.rrr.toFixed(2) : '—';
-      let ci = '';
-      if (state.target) ci += `<div class="c-target"><div class="c-target-lbl">Target</div><div class="c-target-num">${state.target}</div></div>`;
-      ci += `<div class="c-rates">
-        <div class="c-rate-item"><div class="c-rate-lbl">CRR</div><div class="c-rate-num crr">${c}</div></div>
-        <div class="c-rate-item"><div class="c-rate-lbl">RRR</div><div class="c-rate-num rrr">${r}</div></div>
-      </div>`;
-      $('centreInfo').innerHTML = ci;
-    } else if (state.status === 'complete' && state.result) {
-      $('centreInfo').innerHTML = `<div class="c-result">${state.result}</div>`;
-    } else {
-      $('centreInfo').innerHTML = `<div class="c-date">${m.date}<br>${m.venue}</div>`;
-    }
+  // ── LIVE / COMPLETE / STARTED ──
+  homeCity.textContent = H.city;
+  awayCity.textContent = A.city;
+  applyColor(homeCity, hSW, teamColor(m.home));
+  applyColor(awayCity, aSW, teamColor(m.away));
+
+  hSW.innerHTML = scoreHTML(state.home);
+  aSW.innerHTML = scoreHTML(state.away);
+
+  if (state.status === 'live') {
+    sl.className  = 'status-label is-live';
+    sl.innerHTML  = `<div class="live-dot"></div> Live`;
+    const c = state.crr ? state.crr.toFixed(2) : '—';
+    const r = state.rrr ? state.rrr.toFixed(2) : '—';
+    let html = '';
+    if (state.target) html += `<div class="c-target"><div class="c-target-lbl">Target</div><div class="c-target-num">${state.target}</div></div>`;
+    html += `<div class="c-rates"><div class="c-rate-item"><div class="c-rate-lbl">CRR</div><div class="c-rate-num crr">${c}</div></div><div class="c-rate-item"><div class="c-rate-lbl">RRR</div><div class="c-rate-num rrr">${r}</div></div></div>`;
+    ci.innerHTML = html;
+  } else if (state.status === 'complete') {
+    sl.className   = 'status-label';
+    sl.textContent = 'Finished';
+    ci.innerHTML   = state.result ? `<div class="c-result">${state.result}</div>` : `<div class="c-date">${m.venue}</div>`;
+  } else {
+    sl.className   = 'status-label';
+    sl.textContent = `Match starting soon`;
+    ci.innerHTML   = `<div class="c-date">${m.time} IST<br>${m.venue}</div>`;
   }
 
   $('nextUpStrip').innerHTML = '';
 }
 
-// ── Live fetch ──
+// ── LIVE SCORE FETCH ──
 const PROXY = 'https://api.allorigins.win/get?url=';
 
-// Build URL dynamically from today's match
-function getScoreUrl(m) {
-  const dateStr = m.date.toLowerCase().replace(' ', '-');
-  const home    = m.home.toLowerCase();
-  const away    = m.away.toLowerCase();
-  return `https://www.crictracker.com/live-scores/${home}-vs-${away}-match-${m.matchNo}-t20-indian-premier-league-${dateStr}-2026/`;
+function buildCricktrackerUrl(m) {
+  // Format: "Apr 2" → "02-apr"
+  const months = { Jan:'01',Feb:'02',Mar:'03',Apr:'04',May:'05',Jun:'06',
+                   Jul:'07',Aug:'08',Sep:'09',Oct:'10',Nov:'11',Dec:'12' };
+  const [mo, da] = m.date.split(' ');
+  const dd  = da.padStart(2,'0');
+  const mm  = (months[mo] || '00');
+  const home = m.home.toLowerCase();
+  const away = m.away.toLowerCase();
+  return `https://www.crictracker.com/live-scores/${home}-vs-${away}-match-${m.matchNo}-t20-indian-premier-league-${dd}-${mo.toLowerCase()}-2026/`;
 }
 
 async function fetchScore() {
   const m = SCHEDULE[state.matchIdx];
-  // Don't fetch if match hasn't started yet
-  if (!matchHasStarted(m)) return;
+  if (!matchHasStarted(m)) return; // don't fetch before match starts
 
-  const url = getScoreUrl(m);
+  const url = buildCricktrackerUrl(m);
   try {
-    const r    = await fetch(PROXY + encodeURIComponent(url), { cache:'no-store' });
-    const data = await r.json();
+    const res  = await fetch(PROXY + encodeURIComponent(url), { cache:'no-store' });
+    const data = await res.json();
     const html = data.contents;
     if (!html) return;
-    const doc   = new DOMParser().parseFromString(html, 'text/html');
-    const full  = (doc.querySelector('title')?.textContent || '') + ' ' + (doc.body?.textContent || '');
+
+    const doc  = new DOMParser().parseFromString(html, 'text/html');
+    const full = (doc.querySelector('title')?.textContent || '') + ' ' + (doc.body?.textContent || '');
 
     const isDone = /won by|match tied|won the match/i.test(full);
     const isLive = !isDone && /\bCRR\b|\bRRR\b|\bPlay Ongoing\b/i.test(full);
 
     if (isDone) {
       state.status = 'complete';
-      const homeTeam = TEAMS[m.home]?.city || m.home;
-      const awayTeam = TEAMS[m.away]?.city || m.away;
-      const pattern  = new RegExp(`((?:${homeTeam}|${awayTeam}|${m.home}|${m.away})[^\\.]{0,70}(?:won by|tied)[^\\.]{0,60})`, 'i');
-      const rm = full.match(pattern);
-      state.result = rm ? rm[0].trim().replace(/\s+/g,' ') : 'Match Complete';
+      // Build pattern using actual team city names
+      const hCity = TEAMS[m.home]?.city || m.home;
+      const aCity = TEAMS[m.away]?.city || m.away;
+      const pat   = new RegExp(`((?:${hCity}|${aCity}|${m.home}|${m.away})[^.]{0,60}(?:won by|tied)[^.]{0,50})`, 'i');
+      const rm    = full.match(pat);
+      state.result = rm ? rm[0].trim().replace(/\s+/g, ' ') : 'Match Complete';
       return;
     }
+
     if (isLive) state.status = 'live';
 
-    const rx = /(\d{1,3})\/(\d{1,2})\s*[\(\[]?\s*(\d+\.?\d*)\s*(?:ov|overs?)/gi;
+    // ── GENERIC score parsing — works for any match ──
+    // Crictracker shows home team first, then away
+    const scoreRx = /(\d{1,3})\/(\d{1,2})\s*[\(\[]?\s*(\d+\.?\d*)\s*(?:ov|overs?)/gi;
     const found = []; let mx;
-    while ((mx = rx.exec(full)) !== null)
+    while ((mx = scoreRx.exec(full)) !== null) {
       found.push({ runs:+mx[1], wickets:+mx[2], overs:parseFloat(mx[3]) });
+    }
 
-    const dcFirst = full.indexOf('DC') < full.indexOf('LSG');
-    const dcBats  = /DC\s*\*/i.test(full);
+    // Determine batting team via asterisk marker or "batting" keyword in page
+    const homeBatting = new RegExp(`${m.home}\\s*\\*|${TEAMS[m.home]?.city}[^.]*?bat`, 'i').test(full);
+    const awayBatting = new RegExp(`${m.away}\\s*\\*|${TEAMS[m.away]?.city}[^.]*?bat`, 'i').test(full);
 
     if (found.length >= 2) {
-      if (dcBats || dcFirst) {
-        state.away = { ...found[0], allOut: found[0].wickets >= 10 };
+      // Two innings visible — assign based on batting context
+      if (awayBatting) {
+        // Away team batting now = away is 2nd innings
         state.home = { ...found[1], allOut: found[1].wickets >= 10 };
+        state.away = { ...found[0], allOut: found[0].wickets >= 10 };
       } else {
         state.home = { ...found[0], allOut: found[0].wickets >= 10 };
         state.away = { ...found[1], allOut: found[1].wickets >= 10 };
       }
     } else if (found.length === 1) {
-      const lsgBats = /LSG\s*\*/i.test(full);
       const t = { ...found[0], allOut: found[0].wickets >= 10 };
-      if (lsgBats) state.home = t; else state.away = t;
+      if (awayBatting) state.away = t;
+      else             state.home = t;
     }
 
-    const crrM = full.match(/CRR\s*[:\|]?\s*([\d.]+)/i);
-    const rrrM = full.match(/RRR\s*[:\|]?\s*([\d.]+)/i);
+    // CRR, RRR, Target
+    const crrM = full.match(/CRR\s*[:|]?\s*([\d.]+)/i);
+    const rrrM = full.match(/RRR\s*[:|]?\s*([\d.]+)/i);
     const tgtM = full.match(/(?:need|chasing|target\s*of)\s*(\d{2,3})/i);
-    if (crrM) state.crr = parseFloat(crrM[1]);
-    if (rrrM) state.rrr = parseFloat(rrrM[1]);
+    if (crrM) state.crr    = parseFloat(crrM[1]);
+    if (rrrM) state.rrr    = parseFloat(rrrM[1]);
     if (tgtM) state.target = parseInt(tgtM[1]);
 
-  } catch(e) { console.warn('Fetch:', e.message); }
+  } catch (e) {
+    console.warn('Score fetch failed:', e.message);
+  }
 }
 
+// ── MAIN LOOP ──
 async function tick() {
   state.matchIdx = todayIdx();
   await fetchScore();
   render();
 }
 
+// Initial render immediately (shows last match without waiting for fetch)
+render();
+
+// Then kick off full tick
 tick();
-let ms = 120_000, timer = setInterval(tick, ms);
+
+// Adaptive refresh: 30s when live, 2 min otherwise
+let refreshInterval = setInterval(async () => {
+  await tick();
+}, state.status === 'live' ? 30000 : 120000);
+
+// Check every 20s if refresh rate needs to change
 setInterval(() => {
-  const t = state.status === 'live' ? 30_000 : 120_000;
-  if (t !== ms) { clearInterval(timer); ms = t; timer = setInterval(tick, ms); }
-}, 15_000);
+  const target = state.status === 'live' ? 30000 : 120000;
+  clearInterval(refreshInterval);
+  refreshInterval = setInterval(async () => { await tick(); }, target);
+}, 20000);
 </script>
 </body>
 </html>
