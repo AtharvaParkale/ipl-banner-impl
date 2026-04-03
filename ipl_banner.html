@@ -394,26 +394,20 @@ const SCHEDULE = [
   { date:'May 5',  matchNo:46, home:'RR',   away:'LSG',  time:'7:30 PM', venue:'Jaipur'    },
 ];
 
-// ── LAST MATCH RESULTS (keyed by SCHEDULE index of TODAY's match) ──
-// Populated as results come in. homeCity/awayCity must match TEAMS city name exactly.
-const LAST_RESULTS = {
-  1:  { homeCity:'Bangalore', awayCity:'Hyderabad', homeScore:'203/4', homeOv:'15.4 ov', awayScore:'201/9', awayOv:'20 ov',  result:'RCB won by 6 wkts',    venue:'Bangalore · Mar 28' },
-  2:  { homeCity:'Kolkata',   awayCity:'Mumbai',    homeScore:'220/4', homeOv:'20 ov',   awayScore:'224/4', awayOv:'19.1 ov',result:'Mumbai won by 6 wkts',  venue:'Kolkata · Mar 29'   },
-  3:  { homeCity:'Chennai',   awayCity:'Rajasthan', homeScore:'168/6', homeOv:'20 ov',   awayScore:'155/8', awayOv:'20 ov',  result:'Chennai won by 13 runs', venue:'Chennai · Mar 30'   },
-  4:  { homeCity:'Punjab',    awayCity:'Gujarat',   homeScore:'165/7', homeOv:'19.1 ov', awayScore:'162/6', awayOv:'20 ov',  result:'Punjab won by 3 wkts',   venue:'Mullanpur · Apr 1'  },
-  5:  { homeCity:'Delhi',     awayCity:'Lucknow',   homeScore:'145/4', homeOv:'17.1 ov', awayScore:'141/10',awayOv:'18.4 ov',result:'Delhi won by 6 wkts',    venue:'Lucknow · Apr 1'    },
-  6:  { homeCity:'Delhi',     awayCity:'Lucknow',   homeScore:'145/4', homeOv:'17.1 ov', awayScore:'141/10',awayOv:'18.4 ov',result:'Delhi won by 6 wkts',    venue:'Lucknow · Apr 1'    },
-  // Add results here as season progresses — key = index of next match in SCHEDULE
-};
 
 // ── STATE ──
 let state = {
   status: 'upcoming', // 'upcoming' | 'live' | 'complete'
-  matchIdx: 5,
+  matchIdx: 0,
   home: { runs:null, wickets:null, overs:null, allOut:false },
   away: { runs:null, wickets:null, overs:null, allOut:false },
   crr: null, rrr: null, result: null, target: null,
 };
+
+// Cache for scraped last-match data
+let lastMatchData       = null;
+let lastMatchFetchedIdx = -1;
+let prevMatchIdx        = -1;
 
 const $ = id => document.getElementById(id);
 
@@ -443,16 +437,23 @@ function todayIdx() {
 
   // Double-header: pick the match currently active or next to start
   const nowMins = now.getHours() * 60 + now.getMinutes();
-  for (const m of todayMatches) {
-    const [t, ap] = m.time.split(' ');
-    let [h, mi]   = t.split(':').map(Number);
+  function toMins(timeStr) {
+    const [t, ap] = timeStr.split(' ');
+    let [h, mi] = t.split(':').map(Number);
     if (ap === 'PM' && h !== 12) h += 12;
-    const startMins = h * 60 + mi;
+    return h * 60 + mi;
+  }
+  for (const m of todayMatches) {
+    const startMins = toMins(m.time);
     // Show this match from 30 mins before until 3 hours after start
     if (nowMins >= startMins - 30 && nowMins < startMins + 180) return m.idx;
   }
-  // Default: last match of the day
-  return todayMatches[todayMatches.length - 1].idx;
+  // Before first match window → show first match (pre-match / T-1 view)
+  // After last match window → show last match (finished view)
+  const firstStart = toMins(todayMatches[0].time);
+  return nowMins < firstStart - 30
+    ? todayMatches[0].idx
+    : todayMatches[todayMatches.length - 1].idx;
 }
 
 // ── HAS MATCH STARTED? ──
@@ -506,6 +507,55 @@ function colorByCity(cityName) {
   return code ? teamColor(code) : '#aaaaaa';
 }
 
+// ── SCRAPE A COMPLETED MATCH ──
+async function scrapeMatchData(m) {
+  const url = buildCricktrackerUrl(m);
+  try {
+    const html = await proxyFetch(url);
+    if (!html) return null;
+
+    const doc  = new DOMParser().parseFromString(html, 'text/html');
+    const full = (doc.querySelector('title')?.textContent || '') + ' ' + (doc.body?.textContent || '');
+
+    const isDone = /won by|match tied|won the match/i.test(full);
+    if (!isDone) return null;
+
+    // Extract both innings scores
+    const scoreRx = /(\d{1,3})\/(\d{1,2})\s*[\(\[]?\s*(\d+\.?\d*)\s*(?:ov|overs?)/gi;
+    const found = []; let mx;
+    while ((mx = scoreRx.exec(full)) !== null) {
+      found.push({ runs:+mx[1], wickets:+mx[2], overs:parseFloat(mx[3]) });
+    }
+    if (found.length < 2) return null;
+
+    // Extract result sentence
+    const hCity = TEAMS[m.home]?.city || m.home;
+    const aCity = TEAMS[m.away]?.city || m.away;
+    const pat   = new RegExp(`((?:${hCity}|${aCity}|${m.home}|${m.away})[^.]{0,60}(?:won by|tied)[^.]{0,50})`, 'i');
+    const rm    = full.match(pat);
+    const result = rm ? rm[0].trim().replace(/\s+/g, ' ') : 'Match Complete';
+
+    // Determine which innings is home vs away
+    const awayBatted1st = new RegExp(`${m.away}\\s*\\*|${aCity}[^.]*?bat(?:ted)? first`, 'i').test(full);
+    const homeS = awayBatted1st ? found[1] : found[0];
+    const awayS = awayBatted1st ? found[0] : found[1];
+
+    return {
+      homeCity:  hCity,
+      awayCity:  aCity,
+      homeScore: `${homeS.runs}/${homeS.wickets}`,
+      homeOv:    `${homeS.overs} ov`,
+      awayScore: `${awayS.runs}/${awayS.wickets}`,
+      awayOv:    `${awayS.overs} ov`,
+      result,
+      venue:     `${m.venue} · ${m.date}`,
+    };
+  } catch (e) {
+    console.warn('Last match scrape failed:', e.message);
+    return null;
+  }
+}
+
 // ── RENDER ──
 function render() {
   const idx = state.matchIdx;
@@ -513,7 +563,7 @@ function render() {
   const H   = TEAMS[m.home] || { city:m.home, color:'#aaaaaa' };
   const A   = TEAMS[m.away] || { city:m.away, color:'#aaaaaa' };
 
-  const isPreMatch = state.status === 'upcoming' && !matchHasStarted(m);
+  const isPreMatch = state.status === 'upcoming';
 
   const homeCity = $('homeCity');
   const awayCity = $('awayCity');
@@ -535,7 +585,7 @@ function render() {
     sl.className   = 'status-label';
     sl.textContent = 'Last Match';
 
-    const lr = LAST_RESULTS[idx];
+    const lr = lastMatchData;
     if (lr) {
       homeCity.textContent = lr.homeCity;
       awayCity.textContent = lr.awayCity;
@@ -545,7 +595,8 @@ function render() {
       aSW.innerHTML = `<div style="display:inline-flex;align-items:center;justify-content:center;width:100%;gap:0;">${splitScore(lr.awayScore)}</div>${lr.awayOv ? `<div class="t-overs">${lr.awayOv}</div>` : ''}`;
       ci.innerHTML  = `<div class="c-date">${lr.venue}</div><div class="c-result">${lr.result}</div>`;
     } else {
-      // No result yet — show upcoming teams + time
+      // Last match scrape not ready — show next match info under correct label
+      sl.textContent = idx === 0 ? 'Season Opener' : 'Next Match';
       homeCity.textContent = H.city;
       awayCity.textContent = A.city;
       applyColor(homeCity, hSW, teamColor(m.home));
@@ -588,8 +639,36 @@ function render() {
   $('nextUpStrip').innerHTML = '';
 }
 
+// ── PROXY FETCH (tries multiple public CORS proxies in order) ──
+async function proxyFetch(url) {
+  const proxies = [
+    async () => {
+      const r = await fetch('https://corsproxy.io/?' + encodeURIComponent(url), { cache:'no-store' });
+      if (!r.ok) throw new Error(r.status);
+      return r.text();
+    },
+    async () => {
+      const r = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(url), { cache:'no-store' });
+      if (!r.ok) throw new Error(r.status);
+      return r.text();
+    },
+    async () => {
+      const r = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(url), { cache:'no-store' });
+      if (!r.ok) throw new Error(r.status);
+      const d = await r.json();
+      return d.contents || '';
+    },
+  ];
+  for (const tryProxy of proxies) {
+    try {
+      const html = await tryProxy();
+      if (html) return html;
+    } catch(e) { /* try next */ }
+  }
+  return null;
+}
+
 // ── LIVE SCORE FETCH ──
-const PROXY = 'https://api.allorigins.win/get?url=';
 
 function buildCricktrackerUrl(m) {
   // Format: "Apr 2" → "02-apr"
@@ -609,9 +688,7 @@ async function fetchScore() {
 
   const url = buildCricktrackerUrl(m);
   try {
-    const res  = await fetch(PROXY + encodeURIComponent(url), { cache:'no-store' });
-    const data = await res.json();
-    const html = data.contents;
+    const html = await proxyFetch(url);
     if (!html) return;
 
     const doc  = new DOMParser().parseFromString(html, 'text/html');
@@ -676,12 +753,34 @@ async function fetchScore() {
 
 // ── MAIN LOOP ──
 async function tick() {
-  state.matchIdx = todayIdx();
+  const newIdx = todayIdx();
+
+  // Reset live state whenever the active match slot changes
+  if (newIdx !== prevMatchIdx) {
+    state.status = 'upcoming';
+    state.home   = { runs:null, wickets:null, overs:null, allOut:false };
+    state.away   = { runs:null, wickets:null, overs:null, allOut:false };
+    state.crr    = null; state.rrr = null; state.result = null; state.target = null;
+    prevMatchIdx = newIdx;
+  }
+  state.matchIdx = newIdx;
+
+  // Always try to get live data (no-op before match starts)
   await fetchScore();
+
+  // When not live, ensure T-1 result is scraped and cached
+  if (state.status !== 'live' && state.matchIdx > 0 && lastMatchFetchedIdx !== state.matchIdx) {
+    const prev = SCHEDULE[state.matchIdx - 1];
+    lastMatchData       = await scrapeMatchData(prev);
+    lastMatchFetchedIdx = state.matchIdx;
+  }
+
   render();
 }
 
-// Initial render immediately (shows last match without waiting for fetch)
+// Set correct matchIdx before the very first render so we never flash Match 1
+state.matchIdx = todayIdx();
+// Initial render immediately (shows next-match info while T-1 scrape loads)
 render();
 
 // Then kick off full tick
