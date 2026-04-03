@@ -661,9 +661,16 @@ function render() {
   $('nextUpStrip').innerHTML = '';
 }
 
-// ── PROXY FETCH (tries multiple public CORS proxies in order) ──
+// ── PROXY FETCH (serverless-first, public proxies as fallback) ──
 async function proxyFetch(url) {
   const proxies = [
+    // Own Vercel serverless proxy — no CORS issues, works in production
+    async () => {
+      const r = await fetch('/api/proxy?url=' + encodeURIComponent(url), { cache:'no-store' });
+      if (!r.ok) throw new Error(r.status);
+      return r.text();
+    },
+    // Public fallbacks for local dev where /api/proxy isn't running
     async () => {
       const r = await fetch('https://corsproxy.io/?' + encodeURIComponent(url), { cache:'no-store' });
       if (!r.ok) throw new Error(r.status);
@@ -673,12 +680,6 @@ async function proxyFetch(url) {
       const r = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent(url), { cache:'no-store' });
       if (!r.ok) throw new Error(r.status);
       return r.text();
-    },
-    async () => {
-      const r = await fetch('https://api.allorigins.win/get?url=' + encodeURIComponent(url), { cache:'no-store' });
-      if (!r.ok) throw new Error(r.status);
-      const d = await r.json();
-      return d.contents || '';
     },
   ];
   for (const tryProxy of proxies) {
