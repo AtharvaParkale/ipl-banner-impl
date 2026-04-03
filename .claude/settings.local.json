@@ -5,7 +5,9 @@
       "Bash(echo \"PID: $!\")",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8080/ipl_banner_white_two.html)",
       "Bash(open http://localhost:8080/ipl_banner.html)",
-      "Bash(lsof -ti:8080)"
+      "Bash(lsof -ti:8080)",
+      "Bash(kill 15018)",
+      "Bash(echo \"Server PID: $!\")"
     ]
   }
 }
