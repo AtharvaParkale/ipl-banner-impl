@@ -11,7 +11,10 @@
       "Bash(npx vercel:*)",
       "Bash(open http://localhost:3000)",
       "Read(//private/tmp/**)",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\" -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 Chrome/123.0.0.0 Safari/537.36\" \"https://www.crictracker.com/live-scores/kkr-vs-srh-match-6-t20-indian-premier-league-02-apr-2026/\")"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 Chrome/123.0.0.0 Safari/537.36\" \"https://www.crictracker.com/live-scores/kkr-vs-srh-match-6-t20-indian-premier-league-02-apr-2026/\")",
+      "Bash(python3 -m http.server 3000)",
+      "Bash(open http://localhost:3000/ipl_banner.html)",
+      "Bash(python3 -m http.server 8080 --directory /Users/freo/Desktop/ipli-banner)"
     ]
   }
 }
